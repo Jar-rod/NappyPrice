@@ -303,6 +303,11 @@ class Repo:
     def insert_job(self, kind: str, input: Row | None = None) -> Row:
         return self.db.insert("jobs", {"kind": kind, "input": input or {}})
 
+    def list_jobs(self, kind: str, since: datetime) -> list[Row]:
+        """Jobs of one kind created since a time, newest first."""
+        return self.db.select("jobs", {"kind": kind, "created_at": ("gte", iso(since))},
+                              order="created_at", desc=True)
+
     def get_job(self, job_id: str) -> Row | None:
         rows = self.db.select("jobs", {"id": job_id})
         return rows[0] if rows else None

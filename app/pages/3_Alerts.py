@@ -4,6 +4,7 @@ import _bootstrap  # noqa: F401
 import streamlit as st
 
 from app import ui
+from core.jobs import refresh_used_today, used_message
 from scraper.adapters import manual_only_stores
 from scraper.alerts import RULE_LABELS
 
@@ -59,8 +60,11 @@ for store in stores.values():
             if muted != bool(store.get("muted")):
                 repo.update_store(store["id"], muted=muted)
                 st.toast(f"{store['name']} {'muted' if muted else 'unmuted'}")
+            retried = refresh_used_today(repo, store_id=store["id"]) if listing_counts.get(store["id"]) else None
             if st.button("Retry", key=f"retry_{store['id']}", icon=":material/refresh:",
-                         disabled="retry_job" in st.session_state or not listing_counts.get(store["id"])):
+                         help="Once a day per store." if not retried else used_message(retried),
+                         disabled="retry_job" in st.session_state or not listing_counts.get(store["id"])
+                         or retried is not None):
                 ui.launch(repo, "check_now", {"store_id": store["id"]}, "retry_job")
                 st.rerun()
 

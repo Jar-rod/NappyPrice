@@ -36,10 +36,10 @@ def test_every_store_has_a_fixture():
     assert {s for s, cls in ADAPTERS.items() if cls.active} <= covered
 
 
-def test_amazon_is_on_but_manual_only():
+def test_amazon_is_part_of_the_daily_run():
     from scraper.adapters import manual_only_stores
 
-    assert ADAPTERS["amazon"].active and manual_only_stores() == {"amazon"}
+    assert ADAPTERS["amazon"].active and manual_only_stores() == set()
 
 
 def test_clicks_and_dischem_have_five_pages_each():

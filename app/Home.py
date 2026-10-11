@@ -6,6 +6,7 @@ import html
 import streamlit as st
 
 from app import ui
+from core.jobs import refresh_used_today, used_message
 from core.models import CATEGORIES
 from core.views import OTHER_BRANDS, dashboard_rows
 
@@ -84,11 +85,15 @@ if finished:
         st.error(f"The check failed: {result.get('error', 'unknown error')}")
     del st.session_state["check_job"]
 
+used_today = refresh_used_today(repo)
 with st.container(horizontal=True, horizontal_alignment="distribute", vertical_alignment="center"):
     st.markdown(f"**Last updated** {ui.when(repo.last_checked_at(), '%a %d %b %Y, %H:%M')}")
-    if st.button("Check now", icon=":material/refresh:", disabled="check_job" in st.session_state):
+    if st.button("Check now", icon=":material/refresh:",
+                 disabled="check_job" in st.session_state or used_today is not None):
         ui.launch(repo, "check_now", {}, "check_job")
         st.rerun()
+if used_today and "check_job" not in st.session_state:
+    st.caption(used_message(used_today) + " Prices also refresh automatically every morning.")
 
 # ---- Filters
 products = repo.list_products(active=True)

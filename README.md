@@ -22,10 +22,12 @@ The full spec is in `Nappy Price Watch — PRD.md`.
 | Makro | HTML (JSON-LD) | On |
 | Pick n Pay | Site JSON endpoint | On |
 | Takealot | Public product JSON | On |
-| Amazon.co.za | Headless browser | Manual refresh only: read when you press Check now, skipped by the daily run |
+| Amazon.co.za | Headless browser | On, in the daily run; throttles repeated requests, so it may fail on some days |
 | Checkers Sixty60 | Site JSON endpoint, with a delivery address | On |
 
-Amazon.co.za throttles repeated requests, so the daily run leaves it out. Its prices update only on "Check now", and a price not refreshed in the last two days is shown greyed and never counted as the cheapest or in the average.
+Prices refresh automatically every morning at 06:45. A manual refresh ("Check now") is allowed once per calendar day, shared by everyone using the app; "Retry" on the Alerts page is allowed once per store per day. A refresh that fails does not use up the day.
+
+Amazon.co.za is read in the daily run like the other stores, but it throttles repeated requests and needs a headless browser, so it may fail on some days. A price not refreshed in the last two days, at any store, is shown greyed and never counted as the cheapest or in the average. A store can be taken out of the daily run and left to manual refresh only by setting `manual_only = True` on its adapter.
 **Two stores price by location.** Set these as repository *variables* (Settings → Secrets and variables → Actions → Variables) if the defaults are not your area:
 
 - `PNP_STORE_CODE`: Pick n Pay region. Default `WC21`, the site's own default.

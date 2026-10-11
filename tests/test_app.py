@@ -226,3 +226,24 @@ def test_key_revoked_while_the_page_is_open_gives_the_message_not_a_traceback(lo
     assert not app.exception
     assert "Cannot reach the database" in app.error[0].value
     assert "Unregistered API key" in app.caption[0].value
+
+
+def test_check_now_is_disabled_after_todays_refresh(local_db):
+    repo, product = local_db
+    app = open_app()
+    assert not next(b for b in app.button if b.label == "Check now").disabled
+
+    done = repo.insert_job("check_now", {})
+    repo.update_job(done["id"], status="done")
+    app.run()
+    assert next(b for b in app.button if b.label == "Check now").disabled
+    assert any("Next manual refresh available tomorrow" in c.value for c in app.caption)
+
+
+def test_retry_is_disabled_only_for_the_store_already_retried(local_db):
+    repo, product = local_db
+    done = repo.insert_job("check_now", {"store_id": "clicks"})
+    repo.update_job(done["id"], status="done")
+    app = open_app("pages/3_Alerts.py")
+    assert app.button(key="retry_clicks").disabled
+    assert not app.button(key="retry_dischem").disabled

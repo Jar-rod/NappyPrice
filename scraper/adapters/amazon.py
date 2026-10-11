@@ -17,11 +17,10 @@ class Amazon(StoreAdapter):
     base_url = "https://www.amazon.co.za"
     search_url = "https://www.amazon.co.za/s?k={q}"
     needs_browser = True
-    # Read correctly from a home connection in testing, but answered repeated requests
-    # with "503 Service Unavailable". So it is left out of the daily run and read
-    # only when someone presses "Check now".
-    manual_only = True
-    note = "Checked only on manual refresh: Amazon.co.za throttles repeated requests."
+    # Part of the daily run. In testing it read correctly from a home connection but
+    # answered repeated requests with "503 Service Unavailable", so expect it to fail
+    # on some days. Set manual_only = True to take it back out of the daily run.
+    note = "Amazon.co.za throttles repeated requests, so some daily checks may fail."
     wait_for = "#productTitle, form[action*='validateCaptcha']"
     search_wait_for = "div[data-component-type='s-search-result'], form[action*='validateCaptcha']"
     search_root = "div[data-component-type='s-search-result']"
