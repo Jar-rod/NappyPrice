@@ -210,3 +210,19 @@ def test_publishable_key_is_refused_with_a_specific_message(local_db, monkeypatc
     assert not app.exception
     assert "Cannot reach the database" in app.error[0].value
     assert "needs the secret key, which starts with sb_secret_" in app.caption[0].value
+
+
+def test_key_revoked_while_the_page_is_open_gives_the_message_not_a_traceback(local_db, monkeypatch):
+    from core.repo import MemoryBackend
+
+    app = open_app()
+    assert app.toggle                                        # dashboard loaded, database was fine
+
+    def refuse(self, *args, **kwargs):
+        raise RuntimeError("Unregistered API key")
+
+    monkeypatch.setattr(MemoryBackend, "select", refuse)     # the key is deleted in Supabase
+    app.run()
+    assert not app.exception
+    assert "Cannot reach the database" in app.error[0].value
+    assert "Unregistered API key" in app.caption[0].value

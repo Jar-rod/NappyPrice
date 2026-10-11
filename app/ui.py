@@ -142,11 +142,16 @@ def setup(title: str) -> tuple[Repo, str]:
     # connection and one check per visit both go through here.
     try:
         repo = _repo()
-        if not st.session_state.get("db_ok"):
+        if st.session_state.get("db_ok"):
+            # Every later run still makes one small request, so a key revoked while
+            # the page is open is caught here and not as a traceback further down.
+            repo.db.select("price_checks", limit=1)
+        else:
             repo.ping()
             st.session_state["db_ok"] = True
     except Exception as exc:
         st.cache_resource.clear()
+        st.session_state["db_ok"] = False
         st.error("Cannot reach the database. The Supabase key in the app's secrets is missing, wrong or has "
                  "been revoked. Update SUPABASE_URL and SUPABASE_SERVICE_KEY in the secrets, then reload.")
         # Supabase's own reason. It names the problem and never contains the key.
