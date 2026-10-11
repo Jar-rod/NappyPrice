@@ -124,6 +124,15 @@ h3 { font-size: 1.05rem !important; color: #2f6f9f; }
 """
 
 
+def _reason(exc: Exception) -> str:
+    text = str(exc)
+    for known in ("Unregistered API key", "Invalid API key", "row-level security", "publishable key"):
+        if known.lower() in text.lower():
+            return {"row-level security": "this key is not allowed to write (is it the publishable key?)",
+                    "publishable key": text}.get(known, known)
+    return type(exc).__name__
+
+
 def setup(title: str) -> tuple[Repo, str]:
     """Call first on every page."""
     st.set_page_config(page_title=f"{title} · Nappy Price Watch", page_icon="🍼", layout="centered")
@@ -136,10 +145,12 @@ def setup(title: str) -> tuple[Repo, str]:
         if not st.session_state.get("db_ok"):
             repo.ping()
             st.session_state["db_ok"] = True
-    except Exception:
+    except Exception as exc:
         st.cache_resource.clear()
         st.error("Cannot reach the database. The Supabase key in the app's secrets is missing, wrong or has "
                  "been revoked. Update SUPABASE_URL and SUPABASE_SERVICE_KEY in the secrets, then reload.")
+        # Supabase's own reason. It names the problem and never contains the key.
+        st.caption(f"Reason: {_reason(exc)}")
         st.stop()
     return repo, user
 

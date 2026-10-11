@@ -197,3 +197,16 @@ def test_bad_database_key_shows_a_clear_message(local_db, monkeypatch):
     assert not app.exception
     assert "Cannot reach the database" in app.error[0].value
     assert not app.toggle
+
+
+def test_publishable_key_is_refused_with_a_specific_message(local_db, monkeypatch):
+    monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co/rest/v1/")
+    monkeypatch.setenv("SUPABASE_SERVICE_KEY", "sb_publishable_abc123")
+    monkeypatch.setenv("APP_PASSWORD", "correct horse battery")
+    monkeypatch.setattr("time.sleep", lambda s: None)
+    app = open_app()
+    app.text_input[0].set_value("correct horse battery")
+    app.button[0].click().run()
+    assert not app.exception
+    assert "Cannot reach the database" in app.error[0].value
+    assert "needs the secret key, which starts with sb_secret_" in app.caption[0].value

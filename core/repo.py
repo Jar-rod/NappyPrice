@@ -311,16 +311,27 @@ class Repo:
         self.db.update("jobs", {"id": job_id}, values)
 
     def ping(self) -> None:
-        """Raise if the database cannot be reached."""
-        self.db.select("stores", limit=1)
+        """Raise if the database cannot be reached or the key cannot read the tables."""
+        for table in ("stores", "price_checks", "latest_prices"):
+            self.db.select(table, limit=1)
 
 
 LOCAL_DB_PATH = ".local_db.json"
 
 
+class WrongKeyError(Exception):
+    """SUPABASE_SERVICE_KEY holds a key that cannot read or write the tables."""
+
+
 def get_repo() -> Repo:
     url, key = config.get("SUPABASE_URL"), config.get("SUPABASE_SERVICE_KEY")
     if url and key:
+        # The publishable (anon) key connects without error but sees every table as
+        # empty, which looks like lost data. Refuse it outright.
+        if key.strip().startswith("sb_publishable_"):
+            raise WrongKeyError("SUPABASE_SERVICE_KEY holds the publishable key. It needs the secret key, "
+                                "which starts with sb_secret_ (Supabase: Project Settings, API Keys, Secret keys).")
+        url, key = url.strip().removesuffix("/").removesuffix("/rest/v1"), key.strip()
         return Repo(SupabaseBackend(url, key))
     return Repo(MemoryBackend(config.get("LOCAL_DB_PATH", LOCAL_DB_PATH)))
 
