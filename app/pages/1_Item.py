@@ -8,11 +8,7 @@ import streamlit as st
 from app import ui
 from app.charts import history_chart
 from core.models import CATEGORIES, SIZES, UNIT_CHOICES, size_word
-<<<<<<< HEAD
 from core.views import average, history, item_prices
-=======
-from core.views import history, item_prices
->>>>>>> 56b44108f4cf891888894d2a762a896877c970a1
 from scraper.adapters import adapter_for_url
 
 repo, user = ui.setup("Item")
@@ -59,14 +55,9 @@ def price_row(rank: int, row: dict) -> str:
     listing, check = row["listing"], row["check"]
     esc = html.escape
     tags = []
-<<<<<<< HEAD
     star = ui.STAR if rank == 0 and row["unit_price"] is not None and not row["stale"] else ""
     if row["stale"]:
         tags.append('<span class="npw-tag npw-flat">Not refreshed recently</span>')
-=======
-    if rank == 0 and row["unit_price"] is not None:
-        tags.append('<span class="npw-tag npw-best">Best price</span>')
->>>>>>> 56b44108f4cf891888894d2a762a896877c970a1
     if check and check.get("on_special"):
         tags.append('<span class="npw-tag npw-special">On special</span>')
     if check and check.get("in_stock") is False:
@@ -79,15 +70,9 @@ def price_row(rank: int, row: dict) -> str:
     else:
         right = '<div class="npw-sub">No price yet</div>'
         updated = "Not checked yet"
-<<<<<<< HEAD
     out = " npw-out" if (check and check.get("in_stock") is False) or row["stale"] else ""
     return (f'<div class="npw-row{out}"><div class="npw-left">'
             f'<div class="npw-storeline">{ui.store_html(row["store"])}{star} {" ".join(tags)}</div>'
-=======
-    out = " npw-out" if check and check.get("in_stock") is False else ""
-    return (f'<div class="npw-row{out}"><div class="npw-left">'
-            f'<div class="npw-storeline">{ui.store_html(row["store"])} {" ".join(tags)}</div>'
->>>>>>> 56b44108f4cf891888894d2a762a896877c970a1
             f'<div class="npw-sub">{esc(listing.get("title") or "")}</div>'
             f'<div class="npw-sub">{updated} · <a href="{esc(listing["url"])}" target="_blank">Open at store</a></div>'
             f'</div><div class="npw-right">{right}</div></div>')
@@ -95,7 +80,6 @@ def price_row(rank: int, row: dict) -> str:
 
 checked = [r["check"]["checked_at"] for r in prices if r["check"]]
 st.subheader(f"Prices at {len({r['store']['id'] for r in prices})} stores, best first")
-<<<<<<< HEAD
 in_stock_units = [r["unit_price"] for r in prices
                   if r["unit_price"] is not None and not r["stale"] and r["check"].get("in_stock") is not False]
 if len(in_stock_units) > 1:
@@ -108,10 +92,6 @@ if len(in_stock_units) > 1:
 if checked:
     st.caption(f"Last updated {ui.when(max(checked), '%a %d %b %Y, %H:%M')}"
                + (" · average is across every in-stock listing" if len(in_stock_units) > 1 else ""))
-=======
-if checked:
-    st.caption(f"Last updated {ui.when(max(checked), '%a %d %b %Y, %H:%M')}")
->>>>>>> 56b44108f4cf891888894d2a762a896877c970a1
 if prices:
     with st.container(border=True):
         st.html(PRICES_CSS + "".join(price_row(i, r) for i, r in enumerate(prices)))

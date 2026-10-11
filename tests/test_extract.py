@@ -36,15 +36,12 @@ def test_every_store_has_a_fixture():
     assert {s for s, cls in ADAPTERS.items() if cls.active} <= covered
 
 
-<<<<<<< HEAD
 def test_amazon_is_on_but_manual_only():
     from scraper.adapters import manual_only_stores
 
     assert ADAPTERS["amazon"].active and manual_only_stores() == {"amazon"}
 
 
-=======
->>>>>>> 56b44108f4cf891888894d2a762a896877c970a1
 def test_clicks_and_dischem_have_five_pages_each():
     for store in ("clicks", "dischem"):
         assert sum(rel.startswith(store + "/") for rel in PRODUCTS) >= 5

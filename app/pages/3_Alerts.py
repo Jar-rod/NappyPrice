@@ -4,10 +4,7 @@ import _bootstrap  # noqa: F401
 import streamlit as st
 
 from app import ui
-<<<<<<< HEAD
 from scraper.adapters import manual_only_stores
-=======
->>>>>>> 56b44108f4cf891888894d2a762a896877c970a1
 from scraper.alerts import RULE_LABELS
 
 repo, user = ui.setup("Alerts and health")
@@ -34,10 +31,7 @@ for listing in listings.values():
     if listing.get("active"):
         listing_counts[listing["store_id"]] = listing_counts.get(listing["store_id"], 0) + 1
 
-<<<<<<< HEAD
 manual = manual_only_stores()
-=======
->>>>>>> 56b44108f4cf891888894d2a762a896877c970a1
 for store in stores.values():
     failures = store.get("consecutive_failures") or 0
     with st.container(border=True):
@@ -45,11 +39,8 @@ for store in stores.values():
             st.markdown(f"**{store['name']}**")
             if not store.get("active"):
                 st.badge("Switched off", color="gray", icon=":material/block:")
-<<<<<<< HEAD
             elif store["id"] in manual:
                 st.badge("Manual refresh only", color="blue", icon=":material/touch_app:")
-=======
->>>>>>> 56b44108f4cf891888894d2a762a896877c970a1
             elif failures >= 3:
                 st.badge(f"Failing, {failures} days", color="red", icon=":material/error:")
             elif failures:
@@ -59,11 +50,8 @@ for store in stores.values():
         if not store.get("active"):
             st.caption(store.get("note") or "Not in use.")
             continue
-<<<<<<< HEAD
         if store["id"] in manual:
             st.caption("Not part of the daily check. Read only when you press Check now or Retry.")
-=======
->>>>>>> 56b44108f4cf891888894d2a762a896877c970a1
         st.caption(f"Last success {ui.when(store.get('last_success_at'))} · "
                    f"{listing_counts.get(store['id'], 0)} listings · {failures} consecutive failed days")
         with st.container(horizontal=True, horizontal_alignment="distribute", vertical_alignment="center"):
