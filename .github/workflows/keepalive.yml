@@ -1,0 +1,20 @@
+name: Keep schedule alive
+
+# GitHub switches off scheduled workflows in a repo with no activity for 60
+# days. Once a month this re-enables the price check so it keeps running.
+on:
+  schedule:
+    - cron: "0 6 1 * *"
+  workflow_dispatch:
+
+permissions:
+  actions: write
+
+jobs:
+  keepalive:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Re-enable the price check workflow
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: gh api -X PUT "repos/${{ github.repository }}/actions/workflows/check.yml/enable"

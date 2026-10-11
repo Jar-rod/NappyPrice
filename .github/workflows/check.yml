@@ -1,0 +1,60 @@
+name: Price check
+
+on:
+  schedule:
+    - cron: "45 4 * * *"        # 06:45 SAST
+  workflow_dispatch:             # "Check now" and add-item searches
+    inputs:
+      mode:
+        description: daily | match | single
+        default: "daily"
+      job_id:
+        description: Row in the jobs table (match and single)
+        required: false
+
+# Runs queue rather than overlap, so two jobs never hit a store at once.
+concurrency:
+  group: price-check
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    env:
+      SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+      SUPABASE_SERVICE_KEY: ${{ secrets.SUPABASE_SERVICE_KEY }}
+      NTFY_TOPIC: ${{ secrets.NTFY_TOPIC }}
+      RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+      EMAIL_FROM: ${{ secrets.EMAIL_FROM }}
+      ALERT_EMAILS: ${{ secrets.ALERT_EMAILS }}
+      PNP_STORE_CODE: ${{ vars.PNP_STORE_CODE }}
+      CHECKERS_ADDRESS_JSON: ${{ vars.CHECKERS_ADDRESS_JSON }}
+      MODE: ${{ inputs.mode || 'daily' }}
+      JOB_ID: ${{ inputs.job_id }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v5
+        with:
+          enable-cache: true
+      - name: Install
+        run: uv sync --frozen --no-group app --no-group dev
+      - name: Cache browser
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ runner.os }}-${{ hashFiles('uv.lock') }}
+      - name: Install browser
+        run: uv run --no-sync playwright install --with-deps chromium
+      - name: Check Supabase is configured
+        run: test -n "$SUPABASE_URL" || { echo "SUPABASE_URL secret is not set"; exit 1; }
+      - name: Run
+        run: |
+          if [ "$MODE" = "daily" ]; then
+            uv run --no-sync python -m scraper.run daily
+          else
+            uv run --no-sync python -m scraper.run "$MODE" --job-id "$JOB_ID"
+          fi
