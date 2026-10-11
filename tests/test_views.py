@@ -99,6 +99,7 @@ def test_brand_filter(repo):
     assert names(brands=["Huggies"]) == ["Huggies one"]
     assert names(brands=["Huggies", "Other brands"]) == ["Huggies one", "No brand"]
     assert len(names()) == 3
+<<<<<<< HEAD
 
 
 def test_average_is_over_in_stock_listings(repo):
@@ -134,3 +135,5 @@ def test_stale_reading_is_used_when_nothing_is_newer(repo):
     check(repo, makro, day(0), 50.0)
     [row] = dashboard_rows(repo, now=day(5))
     assert row["store_name"] == "Makro"
+=======
+>>>>>>> 56b44108f4cf891888894d2a762a896877c970a1

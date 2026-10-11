@@ -138,6 +138,7 @@ def test_retries_twice_with_backoff_before_failing(repo, stores):
     row = check_listing(Flaky(), listing, sleep=waits.append)
     assert (len(calls), waits) == (3, [5, 20])
     assert row["ok"] is False and "timeout" in row["error"]
+<<<<<<< HEAD
 
 
 def test_manual_only_store_is_skipped_daily_but_read_on_check_now(repo, stores, notifier, monkeypatch):
@@ -155,3 +156,5 @@ def test_manual_only_store_is_skipped_daily_but_read_on_check_now(repo, stores, 
     run_module.run_job(repo, None, notifier, job["id"])
     assert repo.get_job(job["id"])["result"]["checked"] == 2
     assert set(repo.latest_prices()) == {clicks["id"], makro["id"]}
+=======
+>>>>>>> 56b44108f4cf891888894d2a762a896877c970a1

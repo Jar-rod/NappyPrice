@@ -1,0 +1,199 @@
+{
+   "code" : "000000000000409842_EA",
+   "images" : [ {
+      "format" : "zoom",
+      "imageType" : "PRIMARY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h14/h77/32609074905118/silo-product-image-v2-10Jan2026-180049-4015400278818-Straight_on-394057-2293_515Wx515H"
+   }, {
+      "format" : "product",
+      "imageType" : "PRIMARY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/hdc/h59/32609076871198/silo-product-image-v2-10Jan2026-180049-4015400278818-Straight_on-394057-2293_400Wx400H"
+   }, {
+      "format" : "carousel",
+      "imageType" : "PRIMARY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h2a/h24/32609075298334/silo-product-image-v2-10Jan2026-180049-4015400278818-Straight_on-394057-2293_300Wx300H"
+   }, {
+      "format" : "listing",
+      "imageType" : "PRIMARY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h15/haf/32609077264414/silo-product-image-v2-10Jan2026-180049-4015400278818-Straight_on-394057-2293_140Wx140H"
+   }, {
+      "format" : "thumbnail",
+      "imageType" : "PRIMARY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h8a/h16/32609075691550/silo-product-image-v2-10Jan2026-180049-4015400278818-Straight_on-394057-2293_96Wx96H"
+   }, {
+      "format" : "cartIcon",
+      "imageType" : "PRIMARY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/hbf/h41/32609076150302/silo-product-image-v2-10Jan2026-180049-4015400278818-Straight_on-394057-2293_65Wx65H"
+   }, {
+      "format" : "zoom",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h14/h77/32609074905118/silo-product-image-v2-10Jan2026-180049-4015400278818-Straight_on-394057-2293_515Wx515H"
+   }, {
+      "format" : "product",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/hdc/h59/32609076871198/silo-product-image-v2-10Jan2026-180049-4015400278818-Straight_on-394057-2293_400Wx400H"
+   }, {
+      "format" : "thumbnail",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h8a/h16/32609075691550/silo-product-image-v2-10Jan2026-180049-4015400278818-Straight_on-394057-2293_96Wx96H"
+   }, {
+      "format" : "styleSwatch",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h3b/h4c/32609076477982/silo-product-image-v2-10Jan2026-180049-4015400278818-Straight_on-394057-2293_30Wx30H"
+   }, {
+      "format" : "cartIcon",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/hbf/h41/32609076150302/silo-product-image-v2-10Jan2026-180049-4015400278818-Straight_on-394057-2293_65Wx65H"
+   }, {
+      "format" : "listing",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h15/haf/32609077264414/silo-product-image-v2-10Jan2026-180049-4015400278818-Straight_on-394057-2293_140Wx140H"
+   }, {
+      "format" : "carousel",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h2a/h24/32609075298334/silo-product-image-v2-10Jan2026-180049-4015400278818-Straight_on-394057-2293_300Wx300H"
+   }, {
+      "format" : "zoom",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h0d/hbd/32609077690398/silo-product-image-v2-10Jan2026-180051-4015400278818-Angle_A-394059-2298_515Wx515H"
+   }, {
+      "format" : "product",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h54/h7a/32609079328798/silo-product-image-v2-10Jan2026-180051-4015400278818-Angle_A-394059-2298_400Wx400H"
+   }, {
+      "format" : "thumbnail",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/hb2/hd9/32609078640670/silo-product-image-v2-10Jan2026-180051-4015400278818-Angle_A-394059-2298_96Wx96H"
+   }, {
+      "format" : "styleSwatch",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/hcb/h83/32609079099422/silo-product-image-v2-10Jan2026-180051-4015400278818-Angle_A-394059-2298_30Wx30H"
+   }, {
+      "format" : "cartIcon",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/he4/hcf/32609078902814/silo-product-image-v2-10Jan2026-180051-4015400278818-Angle_A-394059-2298_65Wx65H"
+   }, {
+      "format" : "listing",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/hc3/h72/32609079590942/silo-product-image-v2-10Jan2026-180051-4015400278818-Angle_A-394059-2298_140Wx140H"
+   }, {
+      "format" : "carousel",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/haa/he7/32609078214686/silo-product-image-v2-10Jan2026-180051-4015400278818-Angle_A-394059-2298_300Wx300H"
+   }, {
+      "format" : "zoom",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/hf4/h68/32609079853086/silo-product-image-v2-10Jan2026-180051-4015400278818-Angle_D-394051-2301_515Wx515H"
+   }, {
+      "format" : "product",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/he3/hfc/32609081032734/silo-product-image-v2-10Jan2026-180051-4015400278818-Angle_D-394051-2301_400Wx400H"
+   }, {
+      "format" : "thumbnail",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h83/ha0/32609080410142/silo-product-image-v2-10Jan2026-180051-4015400278818-Angle_D-394051-2301_96Wx96H"
+   }, {
+      "format" : "styleSwatch",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h78/hb1/32609080901662/silo-product-image-v2-10Jan2026-180051-4015400278818-Angle_D-394051-2301_30Wx30H"
+   }, {
+      "format" : "cartIcon",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h42/ha4/32609080541214/silo-product-image-v2-10Jan2026-180051-4015400278818-Angle_D-394051-2301_65Wx65H"
+   }, {
+      "format" : "listing",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h8c/hf8/32609081360414/silo-product-image-v2-10Jan2026-180051-4015400278818-Angle_D-394051-2301_140Wx140H"
+   }, {
+      "format" : "carousel",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/ha1/h96/32609080147998/silo-product-image-v2-10Jan2026-180051-4015400278818-Angle_D-394051-2301_300Wx300H"
+   }, {
+      "format" : "zoom",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h00/he8/32609081819166/silo-product-image-v2-10Jan2026-180051-4015400278818-Extra-394053-2304_515Wx515H"
+   }, {
+      "format" : "product",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/he3/h40/32609084211230/silo-product-image-v2-10Jan2026-180051-4015400278818-Extra-394053-2304_400Wx400H"
+   }, {
+      "format" : "thumbnail",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h27/h85/32609082605598/silo-product-image-v2-10Jan2026-180051-4015400278818-Extra-394053-2304_96Wx96H"
+   }, {
+      "format" : "styleSwatch",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h37/h1e/32609083555870/silo-product-image-v2-10Jan2026-180051-4015400278818-Extra-394053-2304_30Wx30H"
+   }, {
+      "format" : "cartIcon",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/hea/h79/32609082998814/silo-product-image-v2-10Jan2026-180051-4015400278818-Extra-394053-2304_65Wx65H"
+   }, {
+      "format" : "listing",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h86/h52/32609084768286/silo-product-image-v2-10Jan2026-180051-4015400278818-Extra-394053-2304_140Wx140H"
+   }, {
+      "format" : "carousel",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h5d/h92/32609082245150/silo-product-image-v2-10Jan2026-180051-4015400278818-Extra-394053-2304_300Wx300H"
+   }, {
+      "format" : "zoom",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h90/hae/32609085358110/silo-product-image-v2-10Jan2026-180052-4015400278818-Extra2-394055-2306_515Wx515H"
+   }, {
+      "format" : "product",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h09/h0a/32609088634910/silo-product-image-v2-10Jan2026-180052-4015400278818-Extra2-394055-2306_400Wx400H"
+   }, {
+      "format" : "thumbnail",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h79/hd6/32609086865438/silo-product-image-v2-10Jan2026-180052-4015400278818-Extra2-394055-2306_96Wx96H"
+   }, {
+      "format" : "styleSwatch",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/hbd/h1e/32609088012318/silo-product-image-v2-10Jan2026-180052-4015400278818-Extra2-394055-2306_30Wx30H"
+   }, {
+      "format" : "cartIcon",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/hc7/h7a/32609087422494/silo-product-image-v2-10Jan2026-180052-4015400278818-Extra2-394055-2306_65Wx65H"
+   }, {
+      "format" : "listing",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h57/h52/32609089257502/silo-product-image-v2-10Jan2026-180052-4015400278818-Extra2-394055-2306_140Wx140H"
+   }, {
+      "format" : "carousel",
+      "imageType" : "GALLERY",
+      "url" : "https://cdn-prd-02.pnp.co.za/sys-master/images/h2e/heb/32609086242846/silo-product-image-v2-10Jan2026-180052-4015400278818-Extra2-394055-2306_300Wx300H"
+   } ],
+   "inStockIndicator" : true,
+   "name" : "Pampers Premium Care Size 4 Jumbo Pack 52 Nappies",
+   "potentialPromotions" : [ {
+      "code" : "SCRIPT20261005214350-3000730391",
+      "description" : "Buy 2, Save 30%",
+      "endDate" : "2026-10-22T21:59:59+0000",
+      "promotionDisplayType" : "SAVE",
+      "promotionTextMessage" : "Buy 2, Save 30%",
+      "promotionType" : "Rule Based Promotion",
+      "startDate" : "2026-10-06T22:00:00+0000",
+      "valid" : true,
+      "validityPeriodText" : "Valid from Wednesday, 07 October 2026 until Thursday, 22 October 2026"
+   } ],
+   "price" : {
+      "average" : false,
+      "currencyIso" : "ZAR",
+      "formattedValue" : "R359.99",
+      "oldPrice" : 0,
+      "oldPriceFormattedValue" : "R0.00",
+      "onlineOnlyPrice" : false,
+      "priceDisplayType" : "SELLING",
+      "priceType" : "BUY",
+      "savings" : 0,
+      "savingsFormattedValue" : "R0.00",
+      "value" : 359.99
+   },
+   "stock" : {
+      "stockLevel" : 10,
+      "stockLevelStatus" : "inStock"
+   },
+   "url" : "/pnp-spa/products/000000000000409842_EA"
+}

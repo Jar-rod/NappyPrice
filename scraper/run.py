@@ -79,12 +79,15 @@ def run_checks(repo: Repo, fetcher: Fetcher, notifier: Notifier, listings: list[
     return summary
 
 
+<<<<<<< HEAD
 def daily_listings(repo: Repo) -> list[dict]:
     """What the scheduled run checks: everything except manual-only stores."""
     skip = {store_id for store_id, cls in ADAPTERS.items() if getattr(cls, "manual_only", False)}
     return [l for l in repo.scrapable_listings() if l["store_id"] not in skip]
 
 
+=======
+>>>>>>> 56b44108f4cf891888894d2a762a896877c970a1
 def run_match(repo: Repo, fetcher: Fetcher, job_input: dict) -> dict:
     """Extract the pasted link (or take corrected fields) and search the other stores."""
     if job_input.get("url"):
@@ -163,7 +166,11 @@ def main(argv: list[str] | None = None) -> int:
         notifier = Notifier(dry_run=args.dry_run)
 
         if args.mode == "daily":
+<<<<<<< HEAD
             summary = run_checks(repo, fetcher, notifier, daily_listings(repo),
+=======
+            summary = run_checks(repo, fetcher, notifier, repo.scrapable_listings(),
+>>>>>>> 56b44108f4cf891888894d2a762a896877c970a1
                                  daily=True, dry_run=args.dry_run)
             print(summary)
         else:

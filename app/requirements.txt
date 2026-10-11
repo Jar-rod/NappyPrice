@@ -1,0 +1,10 @@
+# Streamlit Community Cloud installs from this file. Playwright is left out on
+# purpose: scraping runs in GitHub Actions, not in the app.
+streamlit>=1.42
+plotly>=5.24
+pandas>=2.2
+supabase>=2.7
+httpx>=0.27
+beautifulsoup4>=4.12
+rapidfuzz>=3.9
+python-dotenv>=1.0

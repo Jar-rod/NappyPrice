@@ -117,11 +117,15 @@ def test_item_page_shows_chart_and_listings(local_db):
     assert "Prices at 2 stores, best first" in [h.value for h in app.subheader]
     listing = next(h.body for h in app.get("html") if "npw-row" in h.body)
     assert listing.index("Clicks") < listing.index("Dis-Chem")          # cheapest store listed first
+<<<<<<< HEAD
     assert listing.count("npw-star") == 1 and "google.com/s2/favicons?domain=clicks.co.za" in listing
     assert listing.index("npw-star") < listing.index("Dis-Chem")        # the gold star is on the cheapest store
     summary = next(h.body for h in app.get("html") if "npw-summary" in h.body)
     assert "<span>Cheapest</span><b>R3.67" in summary and "<span>Average</span><b>R4.08" in summary
     assert "<span>Saving</span><b>10%" in summary
+=======
+    assert listing.count("Best price") == 1 and "google.com/s2/favicons?domain=clicks.co.za" in listing
+>>>>>>> 56b44108f4cf891888894d2a762a896877c970a1
 
 
 def test_dashboard_groups_by_category_then_brand(local_db):

@@ -115,11 +115,15 @@ h3 { font-size: 1.05rem !important; color: #2f6f9f; }
 .npw-special { background: rgba(208,59,59,.12); color: #c23030; }
 .npw-target { background: rgba(12,163,12,.14); color: #0a7d0a; }
 .npw-flat { background: #e6f4fd; color: #2f6f9f; }
+<<<<<<< HEAD
 .npw-summary { display: flex; gap: 8px; }
 .npw-summary > div { flex: 1; background: #e6f4fd; border-radius: 10px; padding: 8px 10px; }
 .npw-summary span { display: block; font-size: .75rem; opacity: .8; }
 .npw-summary b { font-size: 1.1rem; white-space: nowrap; }
 .npw-star { color: #f2b01e; font-size: 1.15em; margin-left: 4px; text-shadow: 0 0 1px #b07a00; }
+=======
+.npw-best { background: #89cff0; color: #123a57; }
+>>>>>>> 56b44108f4cf891888894d2a762a896877c970a1
 </style>
 """
 
@@ -138,9 +142,12 @@ def logo_url(store: dict) -> str:
     return f"https://www.google.com/s2/favicons?domain={host}&sz=64"
 
 
+<<<<<<< HEAD
 STAR = '<span class="npw-star" title="Cheapest price" aria-label="Cheapest price">★</span>'
 
 
+=======
+>>>>>>> 56b44108f4cf891888894d2a762a896877c970a1
 def store_html(store: dict | None) -> str:
     """Store logo and name, for use inside HTML blocks."""
     if not store:

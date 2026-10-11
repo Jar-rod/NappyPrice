@@ -1,0 +1,405 @@
+{
+  "amazon/pampers-premium-nappies-airflow-comfort-dp-b09mnj77ry-ref-sr-1-1.html": {
+    "brand": "Pampers",
+    "image_url": "https://m.media-amazon.com/images/I/61w4jchQQcL._AC_SY300_SX300_QL70_ML2_.jpg",
+    "in_stock": true,
+    "on_special": true,
+    "price": 439.98,
+    "range_name": "Premium Care",
+    "size": "3",
+    "store_id": "amazon",
+    "title": "Pampers Premium Care Size 3 (6-10 kg) 120 Nappies",
+    "units_per_pack": 120,
+    "url": "https://www.amazon.co.za/dp/B09MNJ77RY",
+    "was_price": 669.99
+  },
+  "amazon/search.html": {
+    "count": 27,
+    "first": {
+      "price": 439.98,
+      "title": "Pampers Premium Care Size 3 (6-10 kg) 120 Nappies",
+      "url": "https://www.amazon.co.za/dp/B09MNJ77RY"
+    },
+    "query": "pampers premium care size 3"
+  },
+  "babiesrus/pampers-new-baby-mini-s2-jp-94.html": {
+    "brand": "Pampers",
+    "image_url": "https://www.babiesrus.co.za/media/catalog/product/cache/da7f4967c028a7516ec8bcf57a3410bc/4/0/4015400264613_imageview1front_1.png",
+    "in_stock": true,
+    "on_special": false,
+    "price": 279.9,
+    "range_name": "New Baby",
+    "size": "2",
+    "store_id": "babiesrus",
+    "title": "Pampers New Baby Mini S2 JP 94",
+    "units_per_pack": 94,
+    "url": "https://www.babiesrus.co.za/pampers-new-baby-mini-s2-jp-94",
+    "was_price": null
+  },
+  "babiesrus/premium-care-midi-s3-vp-60.html": {
+    "brand": "Pampers",
+    "image_url": "https://www.babiesrus.co.za/media/catalog/product/cache/da7f4967c028a7516ec8bcf57a3410bc/4/0/4015400274780_imageoutofpack.png",
+    "in_stock": true,
+    "on_special": false,
+    "price": 289.9,
+    "range_name": "Premium Care",
+    "size": "3",
+    "store_id": "babiesrus",
+    "title": "PAMPERS PREMIUM CARE VP 60 - SIZE 3",
+    "units_per_pack": 60,
+    "url": "https://www.babiesrus.co.za/premium-care-midi-s3-vp-60",
+    "was_price": null
+  },
+  "babiesrus/search.html": {
+    "count": 40,
+    "first": {
+      "price": 289.9,
+      "title": "Pampers Premium Care Pants Value Pack Size 5 40's",
+      "url": "https://www.babiesrus.co.za/premium-care-pants-size-5-4s-1166606"
+    },
+    "query": "pampers premium care size 3"
+  },
+  "babycity/pampers-premium-care-mega-box-size-4-104-144.html": {
+    "brand": "Pampers",
+    "image_url": "https://www.babycity.co.za/api/catalog/product/4/0/4015400465447_35bdf2241b5a0f95d893ae3fc59ac2c0.jpg?store=default&image-type=image",
+    "in_stock": true,
+    "on_special": true,
+    "price": 404.99,
+    "range_name": "Premium Care",
+    "size": "4",
+    "store_id": "babycity",
+    "title": "Pampers Premium Care Mega Box Size 4 104",
+    "units_per_pack": 104,
+    "url": "https://www.babycity.co.za/pampers-premium-care-mega-box-size-4-104-144",
+    "was_price": 599.99
+  },
+  "babycity/pampers-premium-care-set-size-2-value-pack-2x76-344.html": {
+    "brand": "Pampers",
+    "image_url": "https://www.babycity.co.za/api/catalog/product/6/7/679767fea4056_8001841487175.jpg?store=default&image-type=image",
+    "in_stock": true,
+    "on_special": true,
+    "price": 404.99,
+    "range_name": "Premium Care",
+    "size": "2",
+    "store_id": "babycity",
+    "title": "Pampers Premium Care Set Size 2 Value Pack 2x76",
+    "units_per_pack": 152,
+    "url": "https://www.babycity.co.za/pampers-premium-care-set-size-2-value-pack-2x76-344",
+    "was_price": 599.99
+  },
+  "babycity/search.html": {
+    "count": 40,
+    "first": {
+      "price": 269.99,
+      "title": "Pampers Premium Care Size 3 Value Pack - 60's",
+      "url": "https://www.babycity.co.za/pampers-premium-care-size-3-value-pack-60-s-038"
+    },
+    "query": "pampers premium care size 3"
+  },
+  "checkers/product-pampers-premium-care-size-3-6-10kg-diapers-120-pack-10688996ea.json": {
+    "brand": "Pampers",
+    "image_url": "https://catalog.sixty60.co.za/v2/files/6a5f8ebbfc61f24aa9207a0e?width=320&height=320",
+    "in_stock": true,
+    "on_special": false,
+    "price": 674.99,
+    "range_name": "Premium Care",
+    "size": "3",
+    "store_id": "checkers",
+    "title": "Pampers Premium Care Size 3 6-10kg Diapers 120 Pack",
+    "units_per_pack": 120,
+    "url": "https://www.checkers.co.za/product/pampers-premium-care-size-3-6-10kg-diapers-120-pack-10688996EA",
+    "was_price": null
+  },
+  "checkers/product-pampers-premium-care-size-3-6-10kg-diapers-60-pack-10247330ea.json": {
+    "brand": "Pampers",
+    "image_url": "https://catalog.sixty60.co.za/v2/files/6a5f8d6af7988085b9db1dfc?width=320&height=320",
+    "in_stock": true,
+    "on_special": false,
+    "price": 359.99,
+    "range_name": "Premium Care",
+    "size": "3",
+    "store_id": "checkers",
+    "title": "Pampers Premium Care Size 3 6-10kg Diapers 60 Pack",
+    "units_per_pack": 60,
+    "url": "https://www.checkers.co.za/product/pampers-premium-care-size-3-6-10kg-diapers-60-pack-10247330EA",
+    "was_price": null
+  },
+  "checkers/product-pampers-premium-care-size-6-16kg-pants-36-pack-10775976ea.json": {
+    "brand": "Pampers",
+    "image_url": "https://catalog.sixty60.co.za/v2/files/6a5f814897d9633b056ea756?width=320&height=320",
+    "in_stock": true,
+    "on_special": false,
+    "price": 359.99,
+    "range_name": "Premium Care Pants",
+    "size": "6",
+    "store_id": "checkers",
+    "title": "Pampers Premium Care Size 6 16+kg Pants 36 Pack",
+    "units_per_pack": 36,
+    "url": "https://www.checkers.co.za/product/pampers-premium-care-size-6-16kg-pants-36-pack-10775976EA",
+    "was_price": null
+  },
+  "checkers/search.json": {
+    "count": 30,
+    "first": {
+      "price": 674.99,
+      "title": "Pampers Premium Care Size 3 6-10kg Diapers 120 Pack",
+      "url": "https://www.checkers.co.za/product/pampers-premium-care-size-3-6-10kg-diapers-120-pack-10688996EA"
+    },
+    "query": "pampers premium care size 3"
+  },
+  "clicks/pampers-premium-care-nappies-size-1-82s-p-138992.html": {
+    "brand": "Pampers",
+    "image_url": "https://clicks.co.za/medias/?context=bWFzdGVyfHByb2R1Y3QtaW1hZ2VzfDE4MDU1NXxpbWFnZS9qcGVnfGFEYzJMMmhrTnk4eE1EazJNemN5TWpVd01qRTNOQXw0ZTg0MmU3ZjMxYmMxOGM1NGI2MjIzZjMwZDVlZWU5YTg0ZWRkODRiN2QxZGFjMDVjYWM5NmNhOTc0MTNhZjA0",
+    "in_stock": true,
+    "on_special": true,
+    "price": 219.99,
+    "range_name": "Premium Care",
+    "size": "1",
+    "store_id": "clicks",
+    "title": "Pampers Premium Care Nappies Size 1 82's",
+    "units_per_pack": 82,
+    "url": "https://clicks.co.za/pampers_premium-care-nappies-size-1-82s/p/138992",
+    "was_price": 360.0
+  },
+  "clicks/pampers-premium-care-nappies-size-4-52s-p-139004.html": {
+    "brand": "Pampers",
+    "image_url": "https://clicks.co.za/medias/?context=bWFzdGVyfHByb2R1Y3QtaW1hZ2VzfDE3MTI4OHxpbWFnZS9qcGVnfGFHWmhMMmhqWlM4eE1UQXhOamd4TXpnek9ETTJOZ3xkZmNiMGUxMDIwNmYzMWE2MGExNzQ2MmI4YmIxN2IyYWI0OWQ5NDkxYWE4ZjAzOWY0NTYyNWExN2I4MWVlMWZl",
+    "in_stock": true,
+    "on_special": true,
+    "price": 219.99,
+    "range_name": "Premium Care",
+    "size": "4",
+    "store_id": "clicks",
+    "title": "Pampers Premium Care Nappies Size 4 52's",
+    "units_per_pack": 52,
+    "url": "https://clicks.co.za/pampers_premium-care-nappies-size-4-52s/p/139004",
+    "was_price": 360.0
+  },
+  "clicks/pampers-premium-care-nappies-size-5-44s-p-139002.html": {
+    "brand": "Pampers",
+    "image_url": "https://clicks.co.za/medias/?context=bWFzdGVyfHByb2R1Y3QtaW1hZ2VzfDE1ODMwM3xpbWFnZS9qcGVnfGFESXdMMmcyWXk4eE1UQXhOamd4TkRZeU5EYzVPQXw5ZTk2ZTIwNjhlNTYwNGYxZWIwYmUyZTY1ZmNlZTI5MjhiZmIzMTdlNjk5YTc0NzI1MzZjYjJmNDVmYjBmYzc0",
+    "in_stock": true,
+    "on_special": true,
+    "price": 219.99,
+    "range_name": "Premium Care",
+    "size": "5",
+    "store_id": "clicks",
+    "title": "Pampers Premium Care Nappies Size 5 44's",
+    "units_per_pack": 44,
+    "url": "https://clicks.co.za/pampers_premium-care-nappies-size-5-44s/p/139002",
+    "was_price": 360.0
+  },
+  "clicks/pampers-premium-care-nappies-size-6-36s-p-320025.html": {
+    "brand": "Pampers",
+    "image_url": "https://clicks.co.za/medias/?context=bWFzdGVyfHByb2R1Y3QtaW1hZ2VzfDE3MTkzNHxpbWFnZS9qcGVnfGFHTTJMMmcwWWk4eE1Ua3hPRFkyT1RNME9EZzVOQXwxZTFjYzFkYjdlZWZlY2JhODBlNDA0OWJmZDE1ZTBlYjI1ZWIxYWZhZmZmNTVmNjM1YzhjODI0MTk3YTM4ZTFk",
+    "in_stock": true,
+    "on_special": true,
+    "price": 219.99,
+    "range_name": "Premium Care",
+    "size": "6",
+    "store_id": "clicks",
+    "title": "Pampers Premium Care Nappies Size 6 36's",
+    "units_per_pack": 36,
+    "url": "https://clicks.co.za/pampers_premium-care-nappies-size-6-36s/p/320025",
+    "was_price": 360.0
+  },
+  "clicks/pampers-premium-care-nappies-value-pack-size-3-60s-p-139010.html": {
+    "brand": "Pampers",
+    "image_url": "https://clicks.co.za/medias/?context=bWFzdGVyfHByb2R1Y3QtaW1hZ2VzfDE3ODI5MnxpbWFnZS9qcGVnfGFHUmlMMmd5TXk4eE1EWTVOVFEwTmpreU1USTBOZ3wzMGIwOTQ5MDNlOGMxNjIxNmM5MzM3MTgxNjNjNThkNGY5ZmMxYTQ0YzJlOWU3Mjk2YzZlOGQyOTFjMGY1MjU4",
+    "in_stock": true,
+    "on_special": true,
+    "price": 219.99,
+    "range_name": "Premium Care",
+    "size": "3",
+    "store_id": "clicks",
+    "title": "Pampers Premium Care Nappies Value Pack Size 3 60's",
+    "units_per_pack": 60,
+    "url": "https://clicks.co.za/pampers_premium-care-nappies-value-pack-size-3-60s/p/139010",
+    "was_price": 360.0
+  },
+  "clicks/search.html": {
+    "count": 12,
+    "first": {
+      "price": 219.99,
+      "title": "Pampers Premium Care Nappies Value Pack Size 3 60's",
+      "url": "https://clicks.co.za/pampers_premium-care-nappies-value-pack-size-3-60s/p/139010"
+    },
+    "query": "pampers premium care size 3"
+  },
+  "dischem/huggies-extra-care-size-2-94s-259.html": {
+    "brand": "Huggies",
+    "image_url": "https://www.dischem.co.za/api/catalog/product/6/0/6001019912609_5a2de4e5456f9f968569b42cb5ae9d4d.jpg?store=default&image-type=image",
+    "in_stock": true,
+    "on_special": true,
+    "price": 208.79,
+    "range_name": "Extra Care",
+    "size": "2",
+    "store_id": "dischem",
+    "title": "Huggies Extra Care Size 2 94s",
+    "units_per_pack": 94,
+    "url": "https://www.dischem.co.za/huggies-extra-care-size-2-94s-259",
+    "was_price": 289.99
+  },
+  "dischem/pampers-active-baby-size-4-jumbo-pack-62-s-109.html": {
+    "brand": "Pampers",
+    "image_url": "https://www.dischem.co.za/api/catalog/product/4/0/4015400264774_77e71d115763315e57b5b236ea9505ae.jpg?store=default&image-type=image",
+    "in_stock": true,
+    "on_special": true,
+    "price": 269.99,
+    "range_name": "Active Baby",
+    "size": "4+",
+    "store_id": "dischem",
+    "title": "Pampers Active Baby Size 4+ Jumbo Pack - 62's",
+    "units_per_pack": 62,
+    "url": "https://www.dischem.co.za/pampers-active-baby-size-4-jumbo-pack-62-s-109",
+    "was_price": 299.99
+  },
+  "dischem/pampers-premium-care-size-1-carry-pack-560.html": {
+    "brand": "Pampers",
+    "image_url": "https://www.dischem.co.za/api/catalog/product/8/7/8700216529990_c1cf3153d8175d093fe36c1c33e0c9eb.jpg?store=default&image-type=image",
+    "in_stock": true,
+    "on_special": true,
+    "price": 134.99,
+    "range_name": "Premium Care",
+    "size": "1",
+    "store_id": "dischem",
+    "title": "Pampers Premium Care Size 1 Carry Pack",
+    "units_per_pack": null,
+    "url": "https://www.dischem.co.za/pampers-premium-care-size-1-carry-pack-560",
+    "was_price": 149.99
+  },
+  "dischem/pampers-premium-care-size-3-value-pack-60-s-038.html": {
+    "brand": "Pampers",
+    "image_url": "https://www.dischem.co.za/api/catalog/product/4/0/4015400274780_d284a3d719d097e3fad0b55d1b1413f5.jpg?store=default&image-type=image",
+    "in_stock": true,
+    "on_special": true,
+    "price": 269.99,
+    "range_name": "Premium Care",
+    "size": "3",
+    "store_id": "dischem",
+    "title": "Pampers Premium Care Size 3 Value Pack - 60's",
+    "units_per_pack": 60,
+    "url": "https://www.dischem.co.za/pampers-premium-care-size-3-value-pack-60-s-038",
+    "was_price": 299.99
+  },
+  "dischem/pampers-premium-care-size-4-value-pack-52-s-037.html": {
+    "brand": "Pampers",
+    "image_url": "https://www.dischem.co.za/api/catalog/product/4/0/4015400278818_2e7b055771e0745cff7d5f94c58b440d.jpg?store=default&image-type=image",
+    "in_stock": true,
+    "on_special": true,
+    "price": 269.99,
+    "range_name": "Premium Care",
+    "size": "4",
+    "store_id": "dischem",
+    "title": "Pampers Premium Care Size 4 Value Pack - 52's",
+    "units_per_pack": 52,
+    "url": "https://www.dischem.co.za/pampers-premium-care-size-4-value-pack-52-s-037",
+    "was_price": 299.99
+  },
+  "dischem/search.html": {
+    "count": 27,
+    "first": {
+      "price": 269.99,
+      "title": "Pampers Premium Care Size 3 Value Pack - 60's",
+      "url": "https://www.dischem.co.za/pampers-premium-care-size-3-value-pack-60-s-038"
+    },
+    "query": "pampers premium care size 3"
+  },
+  "makro/pampers-premium-care-mb-maxi-size-4-104s-tape-diapers-p-itm541ac7d7997-dirhmwdzsjbyxvph.html": {
+    "brand": "Pampers",
+    "image_url": "https://www.makro.co.za/asset/rukmini/fccp/128/128/ng-fkpublic-ui-user-fbbe/diaper/7/8/p/4-premium-care-mb-maxi-size-4-104s-box-104-pampers-original-imahmwdzjxhd3bhq.jpeg?q=70",
+    "in_stock": true,
+    "on_special": true,
+    "price": 594.0,
+    "range_name": "Premium Care",
+    "size": "4",
+    "store_id": "makro",
+    "title": "Pampers Premium Care MB Maxi Size 4 104s Tape Diapers",
+    "units_per_pack": 104,
+    "url": "https://www.makro.co.za/pampers-premium-care-mb-maxi-size-4-104s-tape-diapers/p/itm541ac7d799741?pid=DIRHMWDZSJBYXVPH",
+    "was_price": 650.0
+  },
+  "makro/pampers-premium-care-size-3-airflow-skin-comfort-tape-diapers-p-itmd4c-dirhb93hyvnh4nmb.html": {
+    "brand": "Pampers",
+    "image_url": "https://www.makro.co.za/asset/rukmini/fccp/128/128/ng-fkpublic-ui-user-fbbe/diaper/n/9/0/3-premium-care-size-3-airflow-skin-comfort-box-1-pampers-original-imahb93hmsf8uhwv.jpeg?q=70",
+    "in_stock": true,
+    "on_special": true,
+    "price": 595.0,
+    "range_name": "Premium Care",
+    "size": "3",
+    "store_id": "makro",
+    "title": "Pampers Premium Care Size 3 Airflow Skin Comfort Tape Diapers",
+    "units_per_pack": 120,
+    "url": "https://www.makro.co.za/pampers-premium-care-size-3-airflow-skin-comfort-tape-diapers/p/itmd4c202f154ae9?pid=DIRHB93HYVNH4NMB",
+    "was_price": 650.0
+  },
+  "makro/search.html": {
+    "count": 10,
+    "first": {
+      "price": null,
+      "title": "Pampers Premium Care Size 3 Airflow Skin Comfort Tape Diapers",
+      "url": "https://www.makro.co.za/pampers-premium-care-size-3-airflow-skin-comfort-tape-diapers/p/itmd4c202f154ae9?pid=DIRHB93HYVNH4NMB"
+    },
+    "query": "pampers premium care size 3"
+  },
+  "pnp/pampers-premium-care-size-3-60-nappies-p-000000000000409837-ea.json": {
+    "brand": "Pampers",
+    "image_url": "https://cdn-prd-02.pnp.co.za/sys-master/images/h31/h43/32609042858014/silo-product-image-v2-10Jan2026-180048-4015400274780-Straight_on-394041-2027_400Wx400H",
+    "in_stock": true,
+    "on_special": true,
+    "price": 359.99,
+    "range_name": "Premium Care",
+    "size": "3",
+    "store_id": "pnp",
+    "title": "Pampers Premium Care Size 3 60 Nappies",
+    "units_per_pack": 60,
+    "url": "https://www.pnp.co.za/pampers-premium-care-size-3-60-nappies/p/000000000000409837_EA",
+    "was_price": null
+  },
+  "pnp/pampers-premium-care-size-4-jumbo-pack-52-nappies-p-000000000000409842.json": {
+    "brand": "Pampers",
+    "image_url": "https://cdn-prd-02.pnp.co.za/sys-master/images/hdc/h59/32609076871198/silo-product-image-v2-10Jan2026-180049-4015400278818-Straight_on-394057-2293_400Wx400H",
+    "in_stock": true,
+    "on_special": true,
+    "price": 359.99,
+    "range_name": "Premium Care",
+    "size": "4",
+    "store_id": "pnp",
+    "title": "Pampers Premium Care Size 4 Jumbo Pack 52 Nappies",
+    "units_per_pack": 52,
+    "url": "https://www.pnp.co.za/pampers-premium-care-size-4-jumbo-pack-52-nappies/p/000000000000409842_EA",
+    "was_price": null
+  },
+  "pnp/search.json": {
+    "count": 18,
+    "first": {
+      "price": 359.99,
+      "title": "Pampers Premium Care Size 3 60 Nappies",
+      "url": "https://www.pnp.co.za/pampers-premium-care-size-3-60-nappies/p/000000000000409837_EA"
+    },
+    "query": "pampers premium care size 3"
+  },
+  "takealot/pampers-premium-care-size-3-taped-6-10-kg-120-nappies-plid28062255.json": {
+    "brand": "Pampers",
+    "image_url": "https://media.takealot.com/covers_images/4f2252e65b074b51941b62d2d82690ee/s-pdpxl.file",
+    "in_stock": true,
+    "on_special": true,
+    "price": 499.0,
+    "range_name": "Premium Care",
+    "size": "3",
+    "store_id": "takealot",
+    "title": "Pampers Premium Care Size 3 Taped (6-10 kg) 120 Nappies",
+    "units_per_pack": 120,
+    "url": "https://www.takealot.com/pampers-premium-care-size-3-taped-6-10-kg-120-nappies/PLID28062255",
+    "was_price": 669.0
+  },
+  "takealot/search.json": {
+    "count": 36,
+    "first": {
+      "price": 499.0,
+      "title": "Pampers Premium Care Size 3 Taped (6-10 kg) 120 Nappies",
+      "url": "https://www.takealot.com/pampers-premium-care-size-3-taped-6-10-kg-120-nappies/PLID28062255"
+    },
+    "query": "pampers premium care size 3"
+  }
+}

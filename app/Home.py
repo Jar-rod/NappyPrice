@@ -34,12 +34,19 @@ def card_html(row: dict) -> str:
              else '<div class="npw-noimg"></div>')
     if check:
         others = row["store_count"] - 1
+<<<<<<< HEAD
         average = (f'<div class="npw-sub">Average {ui.rand(row["average"])} per {unit}</div>'
                    if row["average"] is not None else "")
         price = (f'<div class="npw-price">{ui.rand(check["unit_price"])} <small>per {unit}</small>{ui.STAR}</div>'
                  f'<div class="npw-sub">{ui.store_html(row["store"])} · {ui.rand(check["price"])} for '
                  f'{listing["units_per_pack"]}' + (" · out of stock" if check.get("in_stock") is False else "")
                  + "</div>" + average +
+=======
+        price = (f'<div class="npw-price">{ui.rand(check["unit_price"])} <small>per {unit}</small></div>'
+                 f'<div class="npw-sub">{ui.store_html(row["store"])} · {ui.rand(check["price"])} for '
+                 f'{listing["units_per_pack"]}' + (" · out of stock" if check.get("in_stock") is False else "")
+                 + "</div>"
+>>>>>>> 56b44108f4cf891888894d2a762a896877c970a1
                  f'<div class="npw-sub">Updated {ui.when(check["checked_at"], "%d %b, %H:%M")}'
                  + (f' · {others} other store{"s" if others != 1 else ""}' if others > 0 else "") + "</div>")
     else:

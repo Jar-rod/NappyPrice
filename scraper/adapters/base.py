@@ -22,7 +22,10 @@ class StoreAdapter:
     search_url: str            # with a {q} placeholder
     needs_browser = False      # product pages need Playwright
     active = True              # False = shipped switched off, see `note`
+<<<<<<< HEAD
     manual_only = False        # True = skipped by the daily run; read only on "Check now"
+=======
+>>>>>>> 56b44108f4cf891888894d2a762a896877c970a1
     note: str | None = None
     wait_for: str | None = None  # selector that signals a rendered page is ready
     search_wait_for: str | None = None

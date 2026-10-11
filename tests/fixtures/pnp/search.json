@@ -1,0 +1,317 @@
+{
+   "type" : "productCategorySearchPageWsDTO",
+   "pagination" : {
+      "currentPage" : 0,
+      "pageSize" : 20,
+      "sort" : "relevance",
+      "totalPages" : 1,
+      "totalResults" : 18
+   },
+   "products" : [ {
+      "code" : "000000000000409837_EA",
+      "name" : "Pampers Premium Care Size 3 60 Nappies",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R359.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 359.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/Medium---Size-2-4-From-4-9kg/pampers-premium-care-size-3-60-nappies/p/000000000000409837_EA"
+   }, {
+      "code" : "000000000000409842_EA",
+      "name" : "Pampers Premium Care Size 4 Jumbo Pack 52 Nappies",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R359.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 359.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/Large---Size-4-5-From-7-18kg/pampers-premium-care-size-4-jumbo-pack-52-nappies/p/000000000000409842_EA"
+   }, {
+      "code" : "000000000000824321_EA",
+      "name" : "Pampers Size 2 Premium Care 76 Nappies",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R359.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 359.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/Large---Size-4-5-From-7-18kg/pampers-size-2-premium-care-76-nappies/p/000000000000824321_EA"
+   }, {
+      "code" : "000000000000409843_EA",
+      "name" : "Pampers Premium Care Size 5 Value Pack 44 Nappies",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R359.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 359.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/Extra-Large---Size-5/pampers-premium-care-size-5-value-pack-44-nappies/p/000000000000409843_EA"
+   }, {
+      "code" : "000000000000798009_EA",
+      "name" : "Pampers Size 3 Premium Care Pants 56 Nappies",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R359.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 359.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/Pull-Ups/pampers-size-3-premium-care-pants-56-nappies/p/000000000000798009_EA"
+   }, {
+      "code" : "000000000000680020_EA",
+      "name" : "Pampers Baby Dry Size 3 Jumbo Pack 76 Nappies",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R334.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 334.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/Medium---Size-2-4-From-4-9kg/pampers-baby-dry-size-3-jumbo-pack-76-nappies/p/000000000000680020_EA"
+   }, {
+      "code" : "000000000000969441_EA",
+      "name" : "Pampers Premium Care Newborn Size 1 Carry Pack 34 Pack",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R149.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 149.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/New-Born---Size-1-2-From-2-6kg/pampers-premium-care-newborn-size-1-carry-pack-34-pack/p/000000000000969441_EA"
+   }, {
+      "code" : "000000000000820395_EA",
+      "name" : "Pampers Premium Care No1 (2 - 5 kg) Nappies 82 Pack",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R359.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 359.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/Large---Size-4-5-From-7-18kg/pampers-premium-care-no1-2-5-kg-nappies-82-pack/p/000000000000820395_EA"
+   }, {
+      "code" : "000000000000792765_EA",
+      "name" : "Pampers Premium Care Size 6, 36 Nappies",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R359.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 359.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/Extra-Large---Size-5/pampers-premium-care-size-6-36-nappies/p/000000000000792765_EA"
+   }, {
+      "code" : "000000000000804104_EA",
+      "name" : "Pampers Premium Care Size 0, 30 Nappies",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R129.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 129.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/New-Born---Size-1-2-From-2-6kg/pampers-premium-care-size-0-30-nappies/p/000000000000804104_EA"
+   }, {
+      "code" : "000000000000798008_EA",
+      "name" : "Pampers Size 4 Premium Care Pants 50 Pack",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R359.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 359.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/Pull-Ups/pampers-size-4-premium-care-pants-50-pack/p/000000000000798008_EA"
+   }, {
+      "code" : "000000000000792761_EA",
+      "name" : "Pampers Pants Size 3 Jumbo Pack 6-11kg 72 Nappies",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R334.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 334.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/Pull-Ups/pampers-pants-size-3-jumbo-pack-6-11kg-72-nappies/p/000000000000792761_EA"
+   }, {
+      "code" : "000000000000798213_EA",
+      "name" : "Pampers Size 5 Premium Care Pants 40 Nappies",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R359.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 359.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/Pull-Ups/pampers-size-5-premium-care-pants-40-nappies/p/000000000000798213_EA"
+   }, {
+      "code" : "000000000000792757_EA",
+      "name" : "Pampers Pants Size 3, 52 Nappies",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R264.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 264.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/Pull-Ups/pampers-pants-size-3-52-nappies/p/000000000000792757_EA"
+   }, {
+      "code" : "000000000001022694_EA",
+      "name" : "PnP Tiny Tots Gold Care S3 Diapers 60 Pack",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R189.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 189.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/Medium---Size-2-4-From-4-9kg/pnp-tiny-tots-gold-care-s3-diapers-60-pack/p/000000000001022694_EA"
+   }, {
+      "code" : "000000000000985575_EA",
+      "name" : "Huggies Dry Comfort Nappies Jumbo Pack Size 3 60 Pack",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R209.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 209.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/Medium---Size-2-4-From-4-9kg/huggies-dry-comfort-nappies-jumbo-pack-size-3-60-pack/p/000000000000985575_EA"
+   }, {
+      "code" : "000000000000985579_EA",
+      "name" : "Huggies Dry Comfort Nappies Value Pack Size 3 46 Pack",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R174.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 174.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/Medium---Size-2-4-From-4-9kg/huggies-dry-comfort-nappies-value-pack-size-3-46-pack/p/000000000000985579_EA"
+   }, {
+      "code" : "000000000000386501_EA",
+      "name" : "Pampers Baby Dry Size 4+ Jumbo Pack 62 Nappies",
+      "price" : {
+         "average" : false,
+         "currencyIso" : "ZAR",
+         "formattedValue" : "R334.99",
+         "oldPrice" : 0,
+         "oldPriceFormattedValue" : "R0.00",
+         "onlineOnlyPrice" : false,
+         "priceDisplayType" : "SELLING",
+         "priceType" : "BUY",
+         "savings" : 0,
+         "savingsFormattedValue" : "R0.00",
+         "value" : 334.99
+      },
+      "url" : "/All-Products/Baby/Baby-Nappies-%26-Changing/Baby-Nappies/Large---Size-4-5-From-7-18kg/pampers-baby-dry-size-4-jumbo-pack-62-nappies/p/000000000000386501_EA"
+   } ]
+}

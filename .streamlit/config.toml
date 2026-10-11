@@ -1,0 +1,15 @@
+[client]
+showSidebarNavigation = false
+toolbarMode = "minimal"
+
+[browser]
+gatherUsageStats = false
+
+# Baby blue and white. The primary is a deeper blue than the accents so white
+# text on buttons stays readable; the baby blue itself is used for surfaces.
+[theme]
+base = "light"
+primaryColor = "#2f8fd6"
+backgroundColor = "#ffffff"
+secondaryBackgroundColor = "#e6f4fd"
+textColor = "#1b3a57"
