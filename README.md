@@ -16,18 +16,39 @@ The full spec is in `Nappy Price Watch — PRD.md`.
 | Store | How it is read | Status |
 | --- | --- | --- |
 | Clicks | HTML | On |
-| Dis-Chem | HTML (JSON-LD) | On |
+| Dis-Chem | HTML (JSON-LD) | On, Mac runner only |
 | Baby City | HTML (JSON-LD) | On |
 | Babies R Us | HTML | On |
 | Makro | HTML (JSON-LD) | On |
 | Pick n Pay | Site JSON endpoint | On |
 | Takealot | Public product JSON | On |
-| Amazon.co.za | Headless browser | On, in the daily run; throttles repeated requests, so it may fail on some days |
-| Checkers Sixty60 | Site JSON endpoint, with a delivery address | On |
+| Amazon.co.za | Headless browser | On, Mac runner only |
+| Checkers Sixty60 | Site JSON endpoint, with a delivery address | On, Mac runner only |
 
 Prices refresh automatically every morning at 06:45. A manual refresh ("Check now") is allowed once per calendar day, shared by everyone using the app; "Retry" on the Alerts page is allowed once per store per day. A refresh that fails does not use up the day.
 
-Amazon.co.za is read in the daily run like the other stores, but it throttles repeated requests and needs a headless browser, so it may fail on some days. A price not refreshed in the last two days, at any store, is shown greyed and never counted as the cheapest or in the average. A store can be taken out of the daily run and left to manual refresh only by setting `manual_only = True` on its adapter.
+## Two runners
+
+Dis-Chem, Checkers Sixty60 and Amazon.co.za refuse connections from cloud servers (GitHub gets HTTP 403 from the first two, and Amazon needs a real browser session) but read normally from a home connection. So the scraping is split:
+
+| | Runs on | Covers |
+| --- | --- | --- |
+| Daily check, 06:45 | GitHub Actions | Clicks, Baby City, Babies R Us, Makro, Pick n Pay, Takealot |
+| Daily check, first chance after 06:45 | The Mac runner | Dis-Chem, Checkers Sixty60, Amazon.co.za |
+| "Check now", "Retry", "Add item" | The Mac runner if it is online, otherwise GitHub | Everything from the Mac; the first six stores from GitHub |
+
+The Mac runner is a background task that starts `scraper/worker.py` once a minute and at login:
+
+```sh
+scripts/install-mac-runner.sh              # install and start
+scripts/install-mac-runner.sh --uninstall  # stop and remove
+tail -f ~/Library/Logs/NappyPriceWatch/worker.log
+```
+
+It needs the Mac switched on and awake. If it was asleep at 06:45 it catches up when it wakes; if it is off all day, those three stores keep yesterday's prices. A price not refreshed in the last two days, at any store, is shown greyed and never counted as the cheapest or in the average. To have the Mac wake itself each morning: `sudo pmset repeat wakeorpoweron MTWRFSU 06:40:00`.
+
+The app shows whether the Mac runner is online. Amazon.co.za is read as one slow visitor (one browser session, home page first, six seconds between pages); read as a stream of fresh sessions it answers "503 Service Unavailable". Nothing here uses proxies or tries to get past a CAPTCHA.
+
 **Two stores price by location.** Set these as repository *variables* (Settings → Secrets and variables → Actions → Variables) if the defaults are not your area:
 
 - `PNP_STORE_CODE`: Pick n Pay region. Default `WC21`, the site's own default.
@@ -108,6 +129,8 @@ uv run python -m scraper.add <product-url> --category wipes --save   # adds it
 ```
 
 Matches scoring 85 or more are included. `--min-score` lowers that to pull in other pack sizes, and `--also <url>` includes a specific listing.
+
+To look for an item you already track at another store: `uv run python -m scraper.add --product "Milton sterilising fluid" --store amazon` (add `--save` to keep the matches).
 
 ## Alert rules
 

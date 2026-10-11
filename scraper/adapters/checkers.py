@@ -36,6 +36,7 @@ class Checkers(StoreAdapter):
     """
 
     store_id = "checkers"
+    cloud_ok = False   # answers HTTP 403 to cloud servers
     name = "Checkers Sixty60"
     base_url = "https://www.checkers.co.za"
     search_url = "https://www.checkers.co.za/search?Search={q}"

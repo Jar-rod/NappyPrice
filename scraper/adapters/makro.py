@@ -17,6 +17,7 @@ def _spec(html: str, name: str) -> str | None:
 
 class Makro(StoreAdapter):
     store_id = "makro"
+    # Read fine from GitHub Actions (though Streamlit's servers got HTTP 412), so it stays on the cloud run.
     name = "Makro"
     base_url = "https://www.makro.co.za"
     search_url = "https://www.makro.co.za/search?q={q}"

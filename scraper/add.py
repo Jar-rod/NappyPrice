@@ -2,6 +2,8 @@
 
     uv run python -m scraper.add <product-url> --category formula            # show what would be added
     uv run python -m scraper.add <product-url> --category formula --save     # add it
+    uv run python -m scraper.add --product "Milton sterilising fluid" --store amazon [--save]
+                                                    # find an item you already track at another store
     ... --name "Alula Gold RTF" --min-score 85 --also <url> <url>
 
 Matches at other stores scoring at least --min-score are included. --also adds
@@ -11,18 +13,69 @@ from __future__ import annotations
 
 import argparse
 
-from core.items import save_item, unit_price
+from core.items import add_listings, save_item, unit_price
 from core.models import CATEGORIES, size_word
 from core.repo import get_repo
 from scraper.adapters import store_rows
 from scraper.fetch import Fetcher
-from scraper.match import PRETICK_SCORE
+from scraper.match import PRETICK_SCORE, find_matches, with_category
 from scraper.run import run_match
 
 
+def extend_product(repo, args) -> None:
+    """Search one or more stores for an item already tracked, and add the matches."""
+    wanted = args.product.lower()
+    found = [p for p in repo.list_products() if wanted in ui_name(p).lower()]
+    if len(found) != 1:
+        raise SystemExit(f"--product must match exactly one item; '{args.product}' matches: "
+                         + (", ".join(ui_name(p) for p in found) or "nothing"))
+    product = found[0]
+    listings = repo.list_listings(product["id"])
+    if not listings:
+        raise SystemExit("That item has no listings to compare against.")
+    # The listing the item was created from describes it best; fall back to the first.
+    model = next((l for l in listings if l.get("match_score") is None and l.get("title")), listings[0])
+    target = with_category({"title": model.get("title") or product["name"], "brand": product.get("brand"),
+                            "range_name": product.get("range_name"), "size": product.get("size"),
+                            "units_per_pack": model["units_per_pack"]}, product["category"])
+    target.update(size=product.get("size"), units_per_pack=model["units_per_pack"])
+    unit = product.get("unit_label") or "unit"
+    fetcher = Fetcher()
+    try:
+        candidates, errors = find_matches(repo, fetcher, target, only_stores=set(args.store))
+    finally:
+        fetcher.close()
+    print(f"{ui_name(product)} | like: {model.get('title')} ({model['units_per_pack']})")
+    entries = []
+    for store_id, cands in candidates.items():
+        for cand in cands:
+            chosen = (cand["score"] >= args.min_score or cand["url"] in args.also) and cand.get("units_per_pack")
+            if chosen:
+                entries.append(cand)
+            per = unit_price(cand.get("price"), cand.get("units_per_pack"))
+            print(f"  {'+' if chosen else ' '} {store_id:10} {cand['score']:>3}  R{cand.get('price')} / "
+                  f"{cand.get('units_per_pack')} = {'R%.2f' % per if per else '?'} per {unit}  {cand.get('title')}"
+                  f"\n{'':8}{cand['url']}")
+        if not cands:
+            print(f"    {store_id:10} no matches")
+    for store_id, error in errors.items():
+        print(f"  ! {store_id}: {error}")
+    if args.save and entries:
+        print(f"\nAdded {add_listings(repo, product, entries)} listings.")
+    else:
+        print(f"\n{len(entries)} listings marked + would be added. Re-run with --save to add.")
+
+
+def ui_name(product: dict) -> str:
+    size = product.get("size")
+    return product["name"] + (f" {size_word(product.get('category'))} {size}" if size else "")
+
+
 def main() -> None:
-    parser = argparse.ArgumentParser(description="Add an item by product link")
-    parser.add_argument("url")
+    parser = argparse.ArgumentParser(description="Add an item by product link, or find a tracked item at more stores")
+    parser.add_argument("url", nargs="?")
+    parser.add_argument("--product", help="name of an item already tracked; search --store for it")
+    parser.add_argument("--store", nargs="*", default=[], help="store ids to search with --product")
     parser.add_argument("--category", choices=list(CATEGORIES), default="nappies")
     parser.add_argument("--name")
     parser.add_argument("--units", type=int, help="pack count at the linked store, if it cannot be read")
@@ -33,6 +86,12 @@ def main() -> None:
 
     repo = get_repo()
     repo.ensure_stores(store_rows())
+    if args.product:
+        if not args.store:
+            parser.error("--product needs --store")
+        return extend_product(repo, args)
+    if not args.url:
+        parser.error("give a product link, or --product with --store")
     fetcher = Fetcher()
     try:
         result = run_match(repo, fetcher, {"url": args.url, "category": args.category})

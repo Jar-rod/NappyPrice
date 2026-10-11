@@ -17,10 +17,13 @@ class Amazon(StoreAdapter):
     base_url = "https://www.amazon.co.za"
     search_url = "https://www.amazon.co.za/s?k={q}"
     needs_browser = True
-    # Part of the daily run. In testing it read correctly from a home connection but
-    # answered repeated requests with "503 Service Unavailable", so expect it to fail
-    # on some days. Set manual_only = True to take it back out of the daily run.
-    note = "Amazon.co.za throttles repeated requests, so some daily checks may fail."
+    # Amazon throttles a stream of fresh sessions with "503 Service Unavailable". Read
+    # as one slow visitor (one browser session, home page first, a longer pause) it
+    # answered every request in testing. It refuses cloud servers, so only the home
+    # runner reads it.
+    cloud_ok = False
+    min_gap = 6.0
+    note = "Read by the Mac runner only; Amazon.co.za refuses cloud servers."
     wait_for = "#productTitle, form[action*='validateCaptcha']"
     search_wait_for = "div[data-component-type='s-search-result'], form[action*='validateCaptcha']"
     search_root = "div[data-component-type='s-search-result']"
@@ -45,9 +48,16 @@ class Amazon(StoreAdapter):
             "image_url": image.get("src") if image else None,
         }
 
-    def enrich(self, soup, html, fields):
-        if soup.select_one("form[action*='validateCaptcha']"):
+    @staticmethod
+    def check_page(html: str) -> None:
+        """Raise a plain reason if Amazon served a block page instead of content."""
+        if "validateCaptcha" in html:
             raise ExtractError("blocked by a CAPTCHA")
+        if "Service Unavailable Error" in html or "503 - Service Unavailable" in html:
+            raise ExtractError("throttled by Amazon (503 Service Unavailable)")
+
+    def enrich(self, soup, html, fields):
+        self.check_page(html)
         was = soup.select_one(".basisPrice .a-offscreen")
         if was:
             fields["was_price"] = parse.parse_price(was.get_text())
@@ -60,6 +70,7 @@ class Amazon(StoreAdapter):
             fields["title"] = fields["title"].split(",")[0].strip()
 
     def parse_search(self, html):
+        self.check_page(html)
         hits = []
         for result in make_soup(html).select("div[data-component-type='s-search-result']"):
             asin, image = result.get("data-asin"), result.select_one("img.s-image")

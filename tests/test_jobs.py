@@ -64,7 +64,7 @@ def test_match_jobs_are_never_limited(repo):
 
 def test_start_job_refuses_a_second_refresh(repo, monkeypatch):
     started = []
-    monkeypatch.setattr(jobs.subprocess, "Popen", lambda cmd: started.append(cmd))
+    monkeypatch.setattr(jobs.subprocess, "Popen", lambda cmd, **kw: started.append(cmd))
     monkeypatch.setenv("GITHUB_TOKEN", "")
     first = start_job(repo, "check_now", {})
     repo.update_job(first["id"], status="done")

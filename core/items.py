@@ -29,6 +29,12 @@ def save_item(repo: Repo, fields: dict, entries: list[dict], created_by: str | N
         "alert_enabled": True, "created_by": created_by,
         "target_unit_price": suggested_target([p for p in in_stock if p]),
     })
+    add_listings(repo, product, entries)
+    return product
+
+
+def add_listings(repo: Repo, product: dict, entries: list[dict]) -> int:
+    """Attach store pages to a product, saving any price already read as today's first check."""
     stamp = iso(now_utc())
     for entry in entries:
         listing = repo.insert_listing({"product_id": product["id"], "store_id": entry["store_id"],
@@ -42,4 +48,4 @@ def save_item(repo: Repo, fields: dict, entries: list[dict], created_by: str | N
                                      "was_price": entry.get("was_price"),
                                      "on_special": bool(entry.get("on_special")),
                                      "in_stock": entry.get("in_stock")})
-    return product
+    return len(entries)

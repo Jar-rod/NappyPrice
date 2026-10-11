@@ -247,3 +247,17 @@ def test_retry_is_disabled_only_for_the_store_already_retried(local_db):
     app = open_app("pages/3_Alerts.py")
     assert app.button(key="retry_clicks").disabled
     assert not app.button(key="retry_dischem").disabled
+
+
+def test_dashboard_says_when_the_mac_runner_is_offline_and_online(local_db):
+    from core.jobs import HEARTBEAT_KIND
+
+    repo, product = local_db
+    app = open_app()
+    offline = next(c.value for c in app.caption if "Mac runner" in c.value)
+    assert "offline" in offline and "Dis-Chem" in offline and "Amazon.co.za" in offline
+
+    beat = repo.insert_job(HEARTBEAT_KIND, {})
+    repo.update_job(beat["id"], status="done")
+    app.run()
+    assert any("Mac runner online" in c.value for c in app.caption)

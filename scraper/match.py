@@ -8,7 +8,7 @@ from rapidfuzz import fuzz
 from core.models import ProductPage
 from core.repo import Repo
 from scraper import parse
-from scraper.adapters import ADAPTERS
+from scraper.adapters import ADAPTERS, reachable
 from scraper.fetch import Fetcher
 
 WEIGHTS = {"brand": 30, "range_name": 20, "size": 25, "units_per_pack": 15}
@@ -83,15 +83,19 @@ def target_from_page(page: ProductPage | dict, category: str = "nappies") -> dic
     return with_category(data, data.get("category") or category)
 
 
-def find_matches(repo: Repo, fetcher: Fetcher, target: dict, skip_store: str | None = None) -> tuple[dict, dict]:
-    """Search every other active store. Returns ({store: [candidates]}, {store: error})."""
+def find_matches(repo: Repo, fetcher: Fetcher, target: dict, skip_store: str | None = None,
+                 only_stores: set[str] | None = None) -> tuple[dict, dict]:
+    """Search every other active store (or just `only_stores`). Returns ({store: [candidates]}, {store: error})."""
     query = parse.build_query(target)
     category = target.get("category") or "nappies"
     known = {l["url"] for l in repo.list_listings(active_only=False)}
     candidates, errors = {}, {}
     for store in repo.list_stores(active_only=True):
         store_id = store["id"]
-        if store_id == skip_store or store_id not in ADAPTERS:
+        if store_id == skip_store or store_id not in ADAPTERS or (only_stores and store_id not in only_stores):
+            continue
+        if not reachable(store_id):
+            errors[store_id] = "not searched: only the Mac runner can read this store, and it is offline"
             continue
         adapter = ADAPTERS[store_id](fetcher)
         try:

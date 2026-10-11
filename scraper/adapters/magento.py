@@ -43,6 +43,7 @@ class MagentoStore(StoreAdapter):
 
 class DisChem(MagentoStore):
     store_id = "dischem"
+    cloud_ok = False   # answers HTTP 403 to GitHub and Streamlit servers
     name = "Dis-Chem"
     base_url = "https://www.dischem.co.za"
     search_url = "https://www.dischem.co.za/catalogsearch/result/?q={q}"

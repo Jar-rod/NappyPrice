@@ -81,6 +81,8 @@ if finished:
     if finished["status"] == "done":
         st.toast(f"Checked {result.get('checked', 0)} listings, {result.get('failed', 0)} failed, "
                  f"{result.get('alerts', 0)} alerts sent.")
+        if result.get("skipped_stores"):
+            st.warning("Not refreshed, because the Mac runner is offline: " + ", ".join(result["skipped_stores"]))
     else:
         st.error(f"The check failed: {result.get('error', 'unknown error')}")
     del st.session_state["check_job"]
@@ -92,6 +94,7 @@ with st.container(horizontal=True, horizontal_alignment="distribute", vertical_a
                  disabled="check_job" in st.session_state or used_today is not None):
         ui.launch(repo, "check_now", {}, "check_job")
         st.rerun()
+ui.runner_caption(repo)
 if used_today and "check_job" not in st.session_state:
     st.caption(used_message(used_today) + " Prices also refresh automatically every morning.")
 

@@ -16,15 +16,16 @@ from datetime import datetime
 
 from core.repo import Repo, get_repo, iso, now_utc
 from scraper import alerts, health, match, parse
-from scraper.adapters import ADAPTERS, adapter_for_url, store_rows
+from scraper.adapters import ADAPTERS, adapter_for_url, reachable, store_rows
 from scraper.fetch import Fetcher
 from scraper.notify import Notifier
 
 RETRY_WAITS = (5, 20)  # seconds before the second and third attempt
 
 
-def check_listing(adapter, listing: dict, sleep=time.sleep) -> dict:
+def check_listing(adapter, listing: dict, sleep=None) -> dict:
     """Scrape one listing with retries. Returns a price_checks row (not yet saved)."""
+    sleep = sleep or time.sleep
     error = "unknown"
     for attempt in range(len(RETRY_WAITS) + 1):
         if attempt:
@@ -41,7 +42,7 @@ def check_listing(adapter, listing: dict, sleep=time.sleep) -> dict:
 
 
 def check_listings(repo: Repo, fetcher: Fetcher, listings: list[dict], write: bool = True,
-                   sleep=time.sleep, stamp: datetime | None = None) -> dict[str, list[int]]:
+                   sleep=None, stamp: datetime | None = None) -> dict[str, list[int]]:
     """Check listings one store at a time. A failing store never stops the others.
 
     Returns {store_id: [ok count, failed count]}.
@@ -68,7 +69,7 @@ def check_listings(repo: Repo, fetcher: Fetcher, listings: list[dict], write: bo
 
 
 def run_checks(repo: Repo, fetcher: Fetcher, notifier: Notifier, listings: list[dict], *,
-               daily: bool, dry_run: bool = False, now: datetime | None = None, sleep=time.sleep) -> dict:
+               daily: bool, dry_run: bool = False, now: datetime | None = None, sleep=None) -> dict:
     started = now or now_utc()
     results = check_listings(repo, fetcher, listings, write=not dry_run, sleep=sleep, stamp=started)
     summary = {"checked": sum(r[0] for r in results.values()),
@@ -80,9 +81,19 @@ def run_checks(repo: Repo, fetcher: Fetcher, notifier: Notifier, listings: list[
 
 
 def daily_listings(repo: Repo) -> list[dict]:
-    """What the scheduled run checks: everything except manual-only stores."""
+    """What this runner's scheduled run checks.
+
+    Manual-only stores are always left out. On a cloud runner, so are the stores
+    that refuse cloud servers; the home runner reads those (see scraper/worker.py).
+    """
     skip = {store_id for store_id, cls in ADAPTERS.items() if getattr(cls, "manual_only", False)}
-    return [l for l in repo.scrapable_listings() if l["store_id"] not in skip]
+    return [l for l in repo.scrapable_listings() if l["store_id"] not in skip and reachable(l["store_id"])]
+
+
+def unreachable_names(repo: Repo, listings: list[dict]) -> list[str]:
+    """Names of stores in `listings` that this runner cannot read."""
+    names = {s["id"]: s["name"] for s in repo.list_stores()}
+    return sorted({names.get(l["store_id"], l["store_id"]) for l in listings if not reachable(l["store_id"])})
 
 
 def run_match(repo: Repo, fetcher: Fetcher, job_input: dict) -> dict:
@@ -91,6 +102,9 @@ def run_match(repo: Repo, fetcher: Fetcher, job_input: dict) -> dict:
         cls = adapter_for_url(job_input["url"])
         if cls is None:
             raise ValueError("That link is not from a supported store.")
+        if not reachable(cls.store_id):
+            raise ValueError(f"{cls.name} can only be read by the Mac runner, which is offline. "
+                             "Try again when the Mac is on.")
         adapter = cls(fetcher)
         url = adapter.clean_url(job_input["url"])
         if repo.get_listing_by_url(url):
@@ -129,7 +143,10 @@ def run_job(repo: Repo, fetcher: Fetcher, notifier: Notifier, job_id: str) -> No
                 listings = [l for l in listings if l["product_id"] == job_input["product_id"]]
             if job_input.get("store_id"):
                 listings = [l for l in listings if l["store_id"] == job_input["store_id"]]
-            result = run_checks(repo, fetcher, notifier, listings, daily=False)
+            skipped = unreachable_names(repo, listings)
+            result = run_checks(repo, fetcher, notifier, [l for l in listings if reachable(l["store_id"])],
+                                daily=False)
+            result["skipped_stores"] = skipped   # stores this runner cannot read
         repo.update_job(job_id, status="done", result=result)
     except Exception as exc:
         traceback.print_exc()

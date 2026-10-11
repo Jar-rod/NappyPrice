@@ -33,6 +33,7 @@ jobs:
       ALERT_EMAILS: ${{ secrets.ALERT_EMAILS }}
       PNP_STORE_CODE: ${{ vars.PNP_STORE_CODE }}
       CHECKERS_ADDRESS_JSON: ${{ vars.CHECKERS_ADDRESS_JSON }}
+      RUNNER: cloud                # skip stores that refuse cloud servers; the Mac runner reads those
       MODE: ${{ inputs.mode || 'daily' }}
       JOB_ID: ${{ inputs.job_id }}
     steps:

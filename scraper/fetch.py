@@ -26,12 +26,19 @@ class Fetcher:
         self.min_gap = min_gap
         self._last_hit: dict[str, float] = {}
         self._client = httpx.Client(headers=HEADERS, follow_redirects=True, timeout=httpx.Timeout(30, connect=15))
+        self._gaps: dict[str, float] = {}     # per-store pause, where a store needs longer
         self._playwright = None
         self._browser = None
+        self._context = None
+        self._warmed: set[str] = set()
+
+    def set_gap(self, url: str, seconds: float) -> None:
+        """Pause at least this long between requests to the store at `url`."""
+        self._gaps[urlparse(url).netloc] = max(seconds, self.min_gap)
 
     def _wait(self, url: str) -> None:
         host = urlparse(url).netloc
-        wait = self._last_hit.get(host, 0) + self.min_gap - time.monotonic()
+        wait = self._last_hit.get(host, 0) + self._gaps.get(host, self.min_gap) - time.monotonic()
         if wait > 0:
             time.sleep(wait)
         self._last_hit[host] = time.monotonic()
@@ -66,11 +73,16 @@ class Fetcher:
             raise FetchError(f"HTTP {response.status_code}")
         return response.text
 
-    def render(self, url: str, wait_for: str | None = None) -> str:
-        """Load the page in headless Chromium and return the rendered HTML."""
-        self._wait(url)
+    def render(self, url: str, wait_for: str | None = None, warm_up: str | None = None) -> str:
+        """Load the page in headless Chromium and return the rendered HTML.
+
+        One browser session is kept for the whole run, and `warm_up` (a store's
+        home page) is visited once before that store's first page, so a store sees
+        one visitor browsing slowly instead of a stream of brand-new sessions.
+        """
         try:
             from playwright.sync_api import Error as PlaywrightError
+            from playwright.sync_api import TimeoutError as PlaywrightTimeout
             from playwright.sync_api import sync_playwright
         except ImportError as exc:
             raise FetchError("Playwright is not installed") from exc
@@ -78,18 +90,29 @@ class Fetcher:
             if self._browser is None:
                 self._playwright = sync_playwright().start()
                 self._browser = self._playwright.chromium.launch(headless=True)
-            context = self._browser.new_context(user_agent=USER_AGENT, locale="en-ZA",
-                                                viewport={"width": 1280, "height": 900})
+            if self._context is None:
+                self._context = self._browser.new_context(user_agent=USER_AGENT, locale="en-ZA",
+                                                          viewport={"width": 1280, "height": 900})
+            page = self._context.new_page()
             try:
-                page = context.new_page()
+                host = urlparse(url).netloc
+                if warm_up and host not in self._warmed:
+                    self._wait(warm_up)
+                    page.goto(warm_up, wait_until="domcontentloaded", timeout=45000)
+                    page.wait_for_timeout(2500)
+                    self._warmed.add(host)
+                self._wait(url)
                 page.goto(url, wait_until="domcontentloaded", timeout=45000)
                 if wait_for:
-                    page.wait_for_selector(wait_for, timeout=20000)
+                    try:
+                        page.wait_for_selector(wait_for, timeout=20000)
+                    except PlaywrightTimeout:
+                        pass   # hand back whatever loaded; the adapter says what kind of page it is
                 else:
                     page.wait_for_timeout(4000)
                 return page.content()
             finally:
-                context.close()
+                page.close()
         except PlaywrightError as exc:
             raise FetchError(f"browser: {str(exc).splitlines()[0]}") from exc
 
@@ -98,4 +121,5 @@ class Fetcher:
         if self._browser is not None:
             self._browser.close()
             self._playwright.stop()
-            self._browser = self._playwright = None
+            self._browser = self._playwright = self._context = None
+            self._warmed.clear()

@@ -5,7 +5,7 @@ import streamlit as st
 
 from app import ui
 from core.jobs import refresh_used_today, used_message
-from scraper.adapters import manual_only_stores
+from scraper.adapters import home_only_stores, manual_only_stores
 from scraper.alerts import RULE_LABELS
 
 repo, user = ui.setup("Alerts and health")
@@ -18,6 +18,7 @@ products = {p["id"]: p for p in repo.list_products(active=None)}
 
 # ---- Store health
 st.header("Store health", divider="gray")
+ui.runner_caption(repo)
 finished = ui.wait_for(repo, "retry_job", "Retrying the store.")
 if finished:
     result = finished.get("result") or {}
@@ -33,6 +34,7 @@ for listing in listings.values():
         listing_counts[listing["store_id"]] = listing_counts.get(listing["store_id"], 0) + 1
 
 manual = manual_only_stores()
+home_only = home_only_stores()
 for store in stores.values():
     failures = store.get("consecutive_failures") or 0
     with st.container(border=True):
@@ -42,6 +44,7 @@ for store in stores.values():
                 st.badge("Switched off", color="gray", icon=":material/block:")
             elif store["id"] in manual:
                 st.badge("Manual refresh only", color="blue", icon=":material/touch_app:")
+
             elif failures >= 3:
                 st.badge(f"Failing, {failures} days", color="red", icon=":material/error:")
             elif failures:
@@ -53,6 +56,8 @@ for store in stores.values():
             continue
         if store["id"] in manual:
             st.caption("Not part of the daily check. Read only when you press Check now or Retry.")
+        if store["id"] in home_only:
+            st.caption("Read by the Mac runner: this store refuses cloud servers.")
         st.caption(f"Last success {ui.when(store.get('last_success_at'))} · "
                    f"{listing_counts.get(store['id'], 0)} listings · {failures} consecutive failed days")
         with st.container(horizontal=True, horizontal_alignment="distribute", vertical_alignment="center"):

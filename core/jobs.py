@@ -6,6 +6,7 @@ the scraper runs as a subprocess instead.
 """
 from __future__ import annotations
 
+import os
 import subprocess
 import sys
 from datetime import datetime, timedelta
@@ -54,13 +55,43 @@ def used_message(job: dict) -> str:
     return f"Refreshed manually today at {at}. Next manual refresh available tomorrow."
 
 
+HEARTBEAT_KIND = "home_heartbeat"   # one row, re-stamped by the Mac runner every minute
+HOME_DAILY_KIND = "home_daily"      # one row per day the Mac runner did its daily check
+ONLINE_WITHIN = timedelta(minutes=4)
+
+
+def home_runner_seen(repo: Repo) -> datetime | None:
+    """When the Mac runner last reported in."""
+    rows = repo.list_jobs(HEARTBEAT_KIND, datetime(2000, 1, 1, tzinfo=SAST))
+    return parse_ts(rows[0]["created_at"]) if rows else None
+
+
+def home_runner_online(repo: Repo, now: datetime | None = None) -> bool:
+    seen = home_runner_seen(repo)
+    return bool(seen) and (now or now_utc()) - seen <= ONLINE_WITHIN
+
+
+def on_hosted_server() -> bool:
+    """True on Streamlit Community Cloud, where the app's own machine is a cloud server."""
+    return os.path.isdir("/mount/src")
+
+
 def start_job(repo: Repo, kind: str, job_input: dict | None = None) -> dict:
+    """Queue a job and hand it to a runner.
+
+    The Mac runner takes it if it is online: it can read every store. Otherwise
+    GitHub Actions runs it, covering the stores that accept cloud servers. With
+    neither (local development), the scraper runs as a subprocess.
+    """
+    job_input = dict(job_input or {})
     if kind == "check_now":
         # Enforced here as well as on the button, so a second tab or a double tap cannot get round it.
-        used = refresh_used_today(repo, store_id=(job_input or {}).get("store_id"))
+        used = refresh_used_today(repo, store_id=job_input.get("store_id"))
         if used:
             raise JobError(used_message(used))
-    job = repo.insert_job(kind, job_input)
+    if home_runner_online(repo):
+        return repo.insert_job(kind, {**job_input, "runner": "home"})   # picked up within a minute
+    job = repo.insert_job(kind, {**job_input, "runner": "cloud"})
     token, repo_name = config.get("GITHUB_TOKEN"), config.get("GITHUB_REPO")
     if token and repo_name:
         response = httpx.post(
@@ -75,5 +106,6 @@ def start_job(repo: Repo, kind: str, job_input: dict | None = None) -> dict:
             repo.update_job(job["id"], status="failed", result={"error": f"GitHub said {response.status_code}"})
             raise JobError(f"Could not start the job (GitHub returned {response.status_code}).")
     else:
-        subprocess.Popen([sys.executable, "-m", "scraper.run", MODES[kind], "--job-id", str(job["id"])])
+        env = dict(os.environ, RUNNER="cloud") if on_hosted_server() else None
+        subprocess.Popen([sys.executable, "-m", "scraper.run", MODES[kind], "--job-id", str(job["id"])], env=env)
     return job

@@ -23,6 +23,8 @@ class StoreAdapter:
     needs_browser = False      # product pages need Playwright
     active = True              # False = shipped switched off, see `note`
     manual_only = False        # True = skipped by the daily run; read only on "Check now"
+    cloud_ok = True            # False = refuses cloud data centres; only the home (Mac) runner reads it
+    min_gap = 3.0              # seconds between requests to this store
     note: str | None = None
     wait_for: str | None = None  # selector that signals a rendered page is ready
     search_wait_for: str | None = None
@@ -31,6 +33,8 @@ class StoreAdapter:
 
     def __init__(self, fetcher: Fetcher):
         self.fetcher = fetcher
+        if hasattr(fetcher, "set_gap"):
+            fetcher.set_gap(self.base_url, self.min_gap)
 
     # ---- identity
     @classmethod
@@ -70,7 +74,7 @@ class StoreAdapter:
         return extract.to_page(fields, self.clean_url(url), self.store_id)
 
     def fetch_product(self, url: str, browser: bool) -> str:
-        return self.fetcher.render(url, self.wait_for) if browser else self.fetcher.get(url)
+        return self.fetcher.render(url, self.wait_for, warm_up=self.base_url) if browser else self.fetcher.get(url)
 
     def extract(self, url: str) -> ProductPage:
         page = self.parse_product(self.fetch_product(url, self.needs_browser), url)
@@ -90,7 +94,9 @@ class StoreAdapter:
 
     def fetch_search(self, query: str) -> str:
         url = self.search_url.format(q=quote_plus(query))
-        return self.fetcher.render(url, self.search_wait_for) if self.search_needs_browser else self.fetcher.get(url)
+        if self.search_needs_browser:
+            return self.fetcher.render(url, self.search_wait_for, warm_up=self.base_url)
+        return self.fetcher.get(url)
 
     def search(self, query: str) -> list[SearchHit]:
         seen, hits = set(), []

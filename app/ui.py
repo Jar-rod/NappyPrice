@@ -12,10 +12,10 @@ from zoneinfo import ZoneInfo
 import streamlit as st
 
 from core import config
-from core.jobs import JobError, start_job
+from core.jobs import STUCK_AFTER, JobError, home_runner_online, home_runner_seen, start_job
 from core.models import size_word
-from core.repo import Repo, get_repo, parse_ts
-from scraper.adapters import store_rows
+from core.repo import Repo, get_repo, now_utc, parse_ts
+from scraper.adapters import home_only_stores, store_rows
 
 SAST = ZoneInfo("Africa/Johannesburg")
 HOME, ITEM, ADD, ALERTS = "Home.py", "pages/1_Item.py", "pages/2_Add_item.py", "pages/3_Alerts.py"
@@ -204,6 +204,19 @@ def open_item(product_id: str) -> None:
     st.switch_page(ITEM)
 
 
+def runner_caption(repo: Repo) -> None:
+    """Say whether the Mac runner is online, and what is missed when it is not."""
+    home_names = sorted(s["name"] for s in repo.list_stores(active_only=True) if s["id"] in home_only_stores())
+    if not home_names:
+        return
+    if home_runner_online(repo):
+        st.caption(":material/check_circle: Mac runner online: every store can be refreshed.")
+    else:
+        seen = home_runner_seen(repo)
+        st.caption(f":material/cloud_off: Mac runner offline (last seen {when(seen, '%d %b, %H:%M')}). "
+                   f"{', '.join(home_names)} only refresh while the Mac is on.")
+
+
 def launch(repo: Repo, kind: str, job_input: dict | None, state_key: str) -> None:
     """Start a job and remember its id under `state_key`."""
     try:
@@ -226,6 +239,9 @@ def wait_for(repo: Repo, state_key: str, message: str) -> dict | None:
         return None
     if job["status"] in ("done", "failed"):
         return job
+    if now_utc() - parse_ts(job["created_at"]) > STUCK_AFTER:
+        # No runner picked it up. Stop waiting; a stuck job does not use up the daily refresh.
+        return {**job, "status": "failed", "result": {"error": "no runner picked the job up in time"}}
 
     @st.fragment(run_every=3)
     def poll():
