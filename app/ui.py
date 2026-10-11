@@ -129,7 +129,19 @@ def setup(title: str) -> tuple[Repo, str]:
     st.set_page_config(page_title=f"{title} · Nappy Price Watch", page_icon="🍼", layout="centered")
     st.html(STYLE)
     user = require_login()
-    return _repo(), user
+    # A wrong or revoked key should give a clear message, not a traceback. The first
+    # connection and one check per visit both go through here.
+    try:
+        repo = _repo()
+        if not st.session_state.get("db_ok"):
+            repo.ping()
+            st.session_state["db_ok"] = True
+    except Exception:
+        st.cache_resource.clear()
+        st.error("Cannot reach the database. The Supabase key in the app's secrets is missing, wrong or has "
+                 "been revoked. Update SUPABASE_URL and SUPABASE_SERVICE_KEY in the secrets, then reload.")
+        st.stop()
+    return repo, user
 
 
 def logo_url(store: dict) -> str:

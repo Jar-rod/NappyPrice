@@ -184,3 +184,16 @@ def test_dashboard_filters_by_brand_and_store(local_db):
 
     app.multiselect(key="filter_brand").set_value(["Huggies"]).run()
     assert "No items match these filters." in [i.value for i in app.info]
+
+
+def test_bad_database_key_shows_a_clear_message(local_db, monkeypatch):
+    from core.repo import Repo
+
+    def refuse(self):
+        raise RuntimeError("Unregistered API key")
+
+    monkeypatch.setattr(Repo, "ping", refuse)
+    app = open_app()
+    assert not app.exception
+    assert "Cannot reach the database" in app.error[0].value
+    assert not app.toggle
