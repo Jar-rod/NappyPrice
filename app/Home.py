@@ -1,5 +1,9 @@
 """Dashboard: every watched item, cheapest price per unit first."""
-import _bootstrap  # noqa: F401
+import importlib
+
+import _bootstrap
+
+importlib.reload(_bootstrap).refresh()   # pick up newly deployed code without a restart
 
 import html
 

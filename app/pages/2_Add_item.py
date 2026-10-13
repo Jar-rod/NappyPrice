@@ -1,5 +1,9 @@
 """Add an item: paste one link, confirm the matches found at other stores."""
-import _bootstrap  # noqa: F401
+import importlib
+
+import _bootstrap
+
+importlib.reload(_bootstrap).refresh()   # pick up newly deployed code without a restart
 
 import streamlit as st
 

@@ -63,6 +63,18 @@ class FakeStores:
 STORE_IDS = ["clicks", "dischem", "babycity", "makro"]
 
 
+@pytest.fixture(autouse=True, scope="session")
+def no_module_refresh_during_tests():
+    """The app drops stale modules after a deploy. Files do not change mid-test-run, and
+    dropping modules here would detach them from the objects other tests have patched."""
+    import sys
+
+    sys.path.insert(0, str(Path(__file__).parent.parent / "app"))
+    import _bootstrap
+
+    sys._npw_fingerprint = _bootstrap.fingerprint()
+
+
 @pytest.fixture
 def repo() -> Repo:
     repo = Repo(MemoryBackend())

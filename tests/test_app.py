@@ -261,3 +261,30 @@ def test_dashboard_says_when_the_mac_runner_is_offline_and_online(local_db):
     repo.update_job(beat["id"], status="done")
     app.run()
     assert any("Mac runner online" in c.value for c in app.caption)
+
+
+def test_new_code_is_picked_up_without_restarting(local_db):
+    """A push adds a function to a module the running app already imported."""
+    import sys
+    import types
+
+    import _bootstrap
+
+    project = {name: module for name, module in sys.modules.items() if name.split(".")[0] in _bootstrap.PACKAGES}
+    fingerprint = sys._npw_fingerprint
+    try:
+        app = open_app()                                     # modules now loaded, as in a running app
+        assert not app.exception
+        stale = types.ModuleType("app.ui")                   # an old in-memory copy, missing newer functions
+        sys.modules["app.ui"] = stale
+        sys._npw_fingerprint = 0.0                           # the files on disk have changed since
+        app.run()
+        assert not app.exception                             # the page re-imported the current app.ui
+        assert sys.modules["app.ui"] is not stale and hasattr(sys.modules["app.ui"], "runner_caption")
+        assert _bootstrap.refresh() is False                 # nothing more to drop until files change again
+    finally:
+        # Put back the module objects the rest of the test run holds references to.
+        for name in [n for n in sys.modules if n.split(".")[0] in _bootstrap.PACKAGES]:
+            del sys.modules[name]
+        sys.modules.update(project)
+        sys._npw_fingerprint = fingerprint
