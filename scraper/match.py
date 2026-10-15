@@ -86,7 +86,7 @@ def target_from_page(page: ProductPage | dict, category: str = "nappies") -> dic
 def find_matches(repo: Repo, fetcher: Fetcher, target: dict, skip_store: str | None = None,
                  only_stores: set[str] | None = None) -> tuple[dict, dict]:
     """Search every other active store (or just `only_stores`). Returns ({store: [candidates]}, {store: error})."""
-    query = parse.build_query(target)
+    queries = parse.query_variants(target)
     category = target.get("category") or "nappies"
     known = {l["url"] for l in repo.list_listings(active_only=False)}
     candidates, errors = {}, {}
@@ -98,15 +98,22 @@ def find_matches(repo: Repo, fetcher: Fetcher, target: dict, skip_store: str | N
             errors[store_id] = "not searched: only the Mac runner can read this store, and it is offline"
             continue
         adapter = ADAPTERS[store_id](fetcher)
-        try:
-            hits = adapter.search(query)[:SEARCH_HITS]
-        except Exception as exc:
-            errors[store_id] = f"search failed: {exc}"
+        ranked, error = [], None
+        for text in queries:
+            try:
+                hits = adapter.search(text)[:SEARCH_HITS]
+            except Exception as exc:
+                error = f"search failed: {exc}"
+                break
+            # Rank on the search title first so only the likeliest few pages are fetched.
+            # Some stores answer a search with unrelated bestsellers; those are dropped here.
+            scored = [(score(target, _from_title(h.title, category)), h) for h in hits if h.url not in known]
+            ranked = [h for s, h in sorted(scored, key=lambda pair: pair[0], reverse=True) if s >= MIN_TITLE_SCORE]
+            if ranked:
+                break   # otherwise try a plainer search text
+        if error and not ranked:
+            errors[store_id] = error
             continue
-        # Rank on the search title first so only the likeliest few pages are fetched.
-        # Some stores answer a search with unrelated bestsellers; those are dropped here.
-        scored = [(score(target, _from_title(h.title, category)), h) for h in hits if h.url not in known]
-        ranked = [h for s, h in sorted(scored, key=lambda pair: pair[0], reverse=True) if s >= MIN_TITLE_SCORE]
         found = []
         for hit in ranked[:CANDIDATES_PER_STORE]:
             try:

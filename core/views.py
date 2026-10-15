@@ -28,8 +28,8 @@ def _size_rank(size: str | None) -> int:
 
 
 def dashboard_rows(repo: Repo, now: datetime | None = None, store_ids: list[str] | None = None,
-                   brands: list[str] | None = None) -> list[dict]:
-    """One row per active product, with its cheapest current listing.
+                   brands: list[str] | None = None, tracked: bool = True) -> list[dict]:
+    """One row per tracked product (or, with tracked=False, per untracked one), with its cheapest listing.
 
     `best` is the cheapest in-stock reading (any reading if none is in stock);
     `change` is the cheapest unit price now against a week ago, as a fraction.
@@ -55,7 +55,7 @@ def dashboard_rows(repo: Repo, now: datetime | None = None, store_ids: list[str]
             old_unit[check["listing_id"]] = float(check["unit_price"])
 
     rows = []
-    for product in repo.list_products(active=True):
+    for product in repo.list_products(active=tracked):
         listings = listings_by_product.get(product["id"], [])
         if (store_ids and not listings) or (brands and (product.get("brand") or OTHER_BRANDS) not in brands):
             continue

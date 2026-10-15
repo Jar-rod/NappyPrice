@@ -103,8 +103,11 @@ OTHER_TITLES = [
     ("formula", "Alula Gold Stage 1 Ready To Feed 24 x 200ml", "1", 24),
     ("formula", "Alula Gold Stage 2 6-12 Months Ready to Feed Follow-On Formula 6 x 200ml", "2", 6),
     ("formula", "Alula Gold Stage 3 1-3 Years Ready to Feed Growing-Up Formula 6 x 200ml", "3", 6),
-    ("formula", "Alula Gold 1 900g Tin", "1", None),            # powder: no bottle count
-    ("formula", "Alula Gold Stage 1 0-6 Months Infant Starter Formula 1.8kg", "1", None),
+    ("formula", "Alula Gold 1 900g Tin", "1", 9),               # powder: counted per 100g
+    ("formula", "Alula Gold Stage 1 0-6 Months Infant Starter Formula 1.8kg", "1", 18),
+    ("formula", "Alula Gold Stage 1 0-6 Months Infant Starter Formula 400g", "1", 4),
+    ("formula", "Alula Gold 1 1.8kg Tin", "1", 18),
+    ("formula", "Alula Gold No1 0-6month Infant starter Formula 1.8kg", "1", 18),
     ("wipes", "Pampers Baby Wipes Sensitive 4's - 4x56", None, 224),
     ("wipes", "Pampers Sensitive Wet Wipes 224 (4x56) Baby Wipes", None, 224),
     ("wipes", "Pampers Sensitive Baby Wipes 4 x 56 Pack", None, 224),
@@ -140,6 +143,16 @@ def test_nappies_keep_what_the_adapter_found():
 
 def test_unit_label_by_category():
     assert parse.unit_label_for("wipes", "x") == "wipe"
-    assert parse.unit_label_for("formula", "x") == "bottle"
+    assert parse.unit_label_for("formula", "Alula Gold 1 Rtf 200ml") == "bottle"
+    assert parse.unit_label_for("formula", "Alula Gold 1 900g Tin") == "100g"
     assert parse.unit_label_for("sterilising", "Milton Sterilising Fluid 500ml") == "100ml"
     assert parse.unit_label_for("sterilising", "Milton Sterilising Tablets 32's") == "tablet"
+
+
+
+def test_query_variants_get_plainer():
+    assert parse.query_variants({"brand": "Alula", "range_name": "Gold", "size": "1", "category": "formula",
+                                 "title": "Alula Gold Stage 1 Infant Starter Formula 400g"}) \
+        == ["alula gold stage 1", "alula gold 1", "alula gold"]
+    assert parse.query_variants({"brand": "Pampers", "range_name": "Premium Care", "size": "3"}) \
+        == ["pampers premium care size 3", "pampers premium care 3", "pampers premium care"]

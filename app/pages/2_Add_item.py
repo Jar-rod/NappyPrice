@@ -147,6 +147,10 @@ if save:
     else:
         entries = [{**page, "units_per_pack": int(units), "score": None}] \
             + [{**c, "units_per_pack": int(u)} for u, c in chosen]
-        product = save_item(repo, corrected, entries, created_by=user)
+        try:
+            product = save_item(repo, corrected, entries, created_by=user)
+        except ValueError as exc:
+            st.error(str(exc))
+            st.stop()
         start_over()
         ui.open_item(product["id"])

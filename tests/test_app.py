@@ -288,3 +288,28 @@ def test_new_code_is_picked_up_without_restarting(local_db):
             del sys.modules[name]
         sys.modules.update(project)
         sys._npw_fingerprint = fingerprint
+
+
+
+def test_items_are_tracked_or_not_and_the_dashboard_switches_between_them(local_db):
+    repo, product = local_db
+    repo.insert_product({"name": "Old wipes", "brand": "Pampers", "category": "wipes", "active": False})
+    app = open_app()
+    assert app.segmented_control(key="view").value == "Tracked"
+    assert [e.label for e in app.expander] == ["Nappies · 1 item"]           # the untracked item is not shown
+
+    app.segmented_control(key="view").set_value("Not tracked").run()
+    assert [e.label for e in app.expander] == ["Wipes · 1 item"]
+    assert not app.toggle(key=f"tracked_{repo.list_products(active=False)[0]['id']}").value
+
+    # Stop tracking the nappies from their card: they move to Not tracked, history intact.
+    app.segmented_control(key="view").set_value("Tracked").run()
+    app.toggle(key=f"tracked_{product['id']}").set_value(False).run()
+    assert repo.get_product(product["id"])["active"] is False
+    assert "Nothing is being tracked yet." in [i.value for i in app.info]
+    assert len(repo.latest_prices()) == 2                                    # prices kept
+
+    # And back again.
+    app.segmented_control(key="view").set_value("Not tracked").run()
+    app.toggle(key=f"tracked_{product['id']}").set_value(True).run()
+    assert repo.get_product(product["id"])["active"] is True

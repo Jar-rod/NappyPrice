@@ -134,3 +134,21 @@ def test_stale_reading_is_used_when_nothing_is_newer(repo):
     check(repo, makro, day(0), 50.0)
     [row] = dashboard_rows(repo, now=day(5))
     assert row["store_name"] == "Makro"
+
+
+
+def test_saving_twice_does_not_create_a_duplicate(repo):
+    import pytest
+
+    from core.items import save_item
+
+    fields = {"name": "Huggies Extra Care", "size": "1", "category": "nappies"}
+    entry = {"url": "https://dischem.test/huggies-1", "store_id": "dischem", "units_per_pack": 96, "price": 208.79}
+    # The first press was cut off after creating the product, before any listing was saved.
+    cut_off = repo.insert_product({**fields})
+    product = save_item(repo, fields, [entry])
+    assert product["id"] == cut_off["id"] and len(repo.list_products()) == 1
+    assert len(repo.list_listings(product["id"])) == 1
+    with pytest.raises(ValueError, match="already being tracked"):
+        save_item(repo, fields, [entry])                    # pressing Save again changes nothing
+    assert len(repo.list_products()) == 1

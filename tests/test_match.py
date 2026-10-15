@@ -94,3 +94,34 @@ def test_nappy_bags_are_not_bin_refill_cartridges():
     same = with_category({"title": "Angelcare 3pk Bin Refills", "brand": "Angelcare"}, "bin_refills")
     assert score(target, bags) <= 50
     assert score(target, same) >= PRETICK_SCORE
+
+
+
+def test_search_falls_back_to_a_plainer_query_when_a_store_finds_nothing(repo, monkeypatch):
+    from core.models import SearchHit
+    from scraper import match
+
+    asked = []
+
+    class StrictSearch:
+        """Like Dis-Chem: nothing for 'stage 1', everything for 'alula gold 1'."""
+
+        def __init__(self, fetcher):
+            pass
+
+        def search(self, query):
+            asked.append(query)
+            if "stage" in query:
+                return []
+            return [SearchHit("https://dischem.test/alula-gold-1-900g", "Alula Gold 1 900g Tin", 299.99)]
+
+        def extract(self, url):
+            from core.models import ProductPage
+            return ProductPage(url=url, store_id="dischem", title="Alula Gold 1 900g Tin", brand="Alula", price=299.99)
+
+    monkeypatch.setattr(match, "ADAPTERS", {"dischem": StrictSearch})
+    target = with_category({"title": "Alula Gold Stage 1 0-6 Months Infant Starter Formula 400g",
+                            "brand": "Alula", "range_name": "Gold"}, "formula")
+    candidates, errors = match.find_matches(repo, None, target)
+    assert asked == ["alula gold stage 1", "alula gold 1"]
+    assert [c["units_per_pack"] for c in candidates["dischem"]] == [9] and not errors

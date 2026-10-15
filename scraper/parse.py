@@ -174,6 +174,20 @@ def parse_volume_ml(title: str | None) -> float | None:
     return amount * int(match.group(1) or 1)
 
 
+_WEIGHT = re.compile(r"(?:(\d{1,3})\s?x\s?)?(\d+(?:[.,]\d+)?)\s?(kg|g)\b", re.I)
+
+
+def parse_weight_g(title: str | None) -> float | None:
+    """Total weight in grams: '400g' -> 400, '1.8kg' -> 1800, '2 x 900g' -> 1800."""
+    match = _WEIGHT.search(title or "")
+    if not match:
+        return None
+    amount = float(match.group(2).replace(",", "."))
+    if match.group(3).lower() == "kg":
+        amount *= 1000
+    return amount * int(match.group(1) or 1)
+
+
 def parse_stage(title: str | None) -> str | None:
     """Formula stage: 'Stage 1', 'No.1' and 'Alula Gold 1 Rtf' are all stage 1."""
     if not title:
@@ -192,6 +206,8 @@ def unit_label_for(category: str, title: str | None) -> str:
 
     if category == "sterilising":
         return "tablet" if re.search(r"tablet", title or "", re.I) else "100ml"
+    if category == "formula" and not is_ready_to_feed(title):
+        return "100g"   # powder is sold by weight; ready-to-feed by the bottle
     return UNIT_LABELS.get(category, "unit")
 
 
@@ -205,16 +221,28 @@ def describe(title: str | None, category: str) -> dict:
         return {}
     count = parse_pack_count(title)
     if category == "formula":
-        # Counted in bottles. A lone ready-to-feed bottle is 1; a powder tin has no bottle count.
-        if count is None and is_ready_to_feed(title):
-            count = 1
-        return {"size": parse_stage(title), "units_per_pack": count if is_ready_to_feed(title) else None}
+        if is_ready_to_feed(title):
+            # Counted in bottles; a lone bottle is 1.
+            return {"size": parse_stage(title), "units_per_pack": count or 1}
+        # Powder is counted in 100g units, so a 400g tin is 4 and a 1.8kg tin is 18.
+        weight = parse_weight_g(title)
+        return {"size": parse_stage(title), "units_per_pack": round(weight / 100) if weight and weight >= 100 else None}
     if category == "sterilising" and unit_label_for(category, title) == "100ml":
         volume = parse_volume_ml(title)
         return {"size": None, "units_per_pack": round(volume / 100) if volume and volume >= 100 else None}
     if category == "bin_refills" and count is None and not re.search(r"\bbin\b(?!.*refill)|system", title, re.I):
         count = 1   # "Angelcare Nappy Bin Refills" with no number is the single pack
     return {"size": None, "units_per_pack": count}
+
+
+def query_variants(target: dict) -> list[str]:
+    """Search texts to try in order. Some store searches are strict: Dis-Chem finds nothing
+    for 'alula gold stage 1' but every tin for 'alula gold 1', so plainer forms follow."""
+    first = build_query(target)
+    brand, range_name, size = target.get("brand"), target.get("range_name"), target.get("size")
+    plainer = [" ".join(p for p in (brand, range_name, size) if p), " ".join(p for p in (brand, range_name) if p)]
+    variants = [first] + [re.sub(r"\s+", " ", v).strip().lower() for v in plainer if brand]
+    return list(dict.fromkeys(v for v in variants if v))
 
 
 def build_query(target: dict) -> str:

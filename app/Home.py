@@ -67,11 +67,20 @@ def card_html(row: dict) -> str:
 
 def item_card(row: dict) -> None:
     product = row["product"]
+    is_tracked = bool(product.get("active"))
     with st.container(border=True):
         st.html(card_html(row))
         with st.container(horizontal=True, horizontal_alignment="distribute", vertical_alignment="center"):
-            enabled = st.toggle("Alerts", value=bool(product.get("alert_enabled")), key=f"alert_{product['id']}")
-            if enabled != bool(product.get("alert_enabled")):
+            # Tracked items are checked every day and shown here; untracked ones keep their history.
+            tracked = st.toggle("Tracked", value=is_tracked, key=f"tracked_{product['id']}")
+            if tracked != is_tracked:
+                repo.update_product(product["id"], active=tracked)
+                st.toast(f"{ui.product_title(product)} is {'now tracked' if tracked else 'no longer tracked'}. "
+                         f"Find it under {'Tracked' if tracked else 'Not tracked'}.")
+                st.rerun()
+            enabled = st.toggle("Alerts", value=bool(product.get("alert_enabled")), key=f"alert_{product['id']}",
+                                disabled=not is_tracked)
+            if is_tracked and enabled != bool(product.get("alert_enabled")):
                 repo.update_product(product["id"], alert_enabled=enabled)
                 st.toast(f"Alerts {'on' if enabled else 'off'} for {ui.product_title(product)}")
             if st.button("All prices", key=f"open_{product['id']}", icon=":material/storefront:"):
@@ -103,7 +112,10 @@ if used_today and "check_job" not in st.session_state:
     st.caption(used_message(used_today) + " Prices also refresh automatically every morning.")
 
 # ---- Filters
-products = repo.list_products(active=True)
+view = st.segmented_control("Show", ["Tracked", "Not tracked"], default="Tracked", key="view",
+                            label_visibility="collapsed") or "Tracked"
+showing_tracked = view == "Tracked"
+products = repo.list_products(active=showing_tracked)
 listed_stores = {l["store_id"] for l in repo.list_listings()}
 store_names = {s["id"]: s["name"] for s in repo.list_stores() if s["id"] in listed_stores}
 brand_options = sorted({p.get("brand") or OTHER_BRANDS for p in products}, key=str.lower)
@@ -111,18 +123,23 @@ with st.container(horizontal=True, gap="small"):
     brand_filter = st.multiselect("Brand", brand_options, key="filter_brand", placeholder="All brands")
     store_filter = st.multiselect("Store", sorted(store_names, key=store_names.get), key="filter_store",
                                   format_func=store_names.get, placeholder="All stores")
-alerts_only = st.toggle("Alerts on only", key="alerts_only")
+alerts_only = st.toggle("Alerts on only", key="alerts_only") if showing_tracked else False
 
-rows = dashboard_rows(repo, store_ids=store_filter or None, brands=brand_filter or None)
+rows = dashboard_rows(repo, store_ids=store_filter or None, brands=brand_filter or None, tracked=showing_tracked)
+if not showing_tracked:
+    st.caption("Not tracked: these are not checked any more, and keep their price history. "
+               "Switch Tracked on to start checking one again.")
 if alerts_only:
     rows = [r for r in rows if r["product"].get("alert_enabled")]
 if store_filter:
     st.caption("Showing the best price among the selected stores only.")
 
 if not rows:
-    if not products:
-        st.info("Nothing is being watched yet.")
+    if not products and showing_tracked:
+        st.info("Nothing is being tracked yet.")
         st.page_link(ui.ADD, label="Add your first item", icon=":material/add:")
+    elif not products:
+        st.info("Every item is being tracked.")
     else:
         st.info("No items match these filters.")
 
@@ -142,17 +159,5 @@ for category, brands in by_category.items():
             st.subheader(brand)
             for row in items:
                 item_card(row)
-
-# ---- Archived
-archived = repo.list_products(active=False)
-if archived:
-    with st.expander(f"Archived ({len(archived)})"):
-        st.caption("Removed items keep their price history. Restore one to start tracking it again.")
-        for product in archived:
-            with st.container(horizontal=True, horizontal_alignment="distribute", vertical_alignment="center"):
-                st.write(ui.product_title(product))
-                if st.button("Restore", key=f"restore_{product['id']}"):
-                    repo.update_product(product["id"], active=True)
-                    st.rerun()
 
 ui.sign_out_button()

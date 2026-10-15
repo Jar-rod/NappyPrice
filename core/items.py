@@ -20,6 +20,19 @@ def save_item(repo: Repo, fields: dict, entries: list[dict], created_by: str | N
     target defaults to 15% under the cheapest in-stock price per unit.
     """
     category = fields.get("category") or "nappies"
+    # A second press of Save can interrupt the first after it created the product but
+    # before its listings were written. Reuse that empty product instead of making another,
+    # and never create a second product for a link that is already tracked.
+    for entry in entries:
+        if repo.get_listing_by_url(entry["url"]):
+            raise ValueError("This item is already being tracked.")
+    orphan = next((p for p in repo.list_products(active=None)
+                   if p["name"] == fields["name"] and p.get("size") == fields.get("size")
+                   and p.get("category") == category and not repo.list_listings(p["id"], active_only=False)), None)
+    if orphan:
+        repo.update_product(orphan["id"], active=True)
+        add_listings(repo, orphan, entries)
+        return orphan
     in_stock = [unit_price(e.get("price"), e["units_per_pack"]) for e in entries if e.get("in_stock") is not False]
     product = repo.insert_product({
         "name": fields["name"], "brand": fields.get("brand"), "range_name": fields.get("range_name"),

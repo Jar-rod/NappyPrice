@@ -33,8 +33,8 @@ prices = item_prices(repo, product["id"])
 
 st.title(ui.product_title(product))
 if not product.get("active"):
-    st.warning("This item is archived and is not being checked.")
-    if st.button("Restore"):
+    st.warning("This item is not tracked, so it is not being checked. Its price history is kept.")
+    if st.button("Track again", icon=":material/visibility:"):
         repo.update_product(product["id"], active=True)
         st.rerun()
 
@@ -192,13 +192,13 @@ with st.expander("Add or remove a store listing"):
                     st.toast("Listing added. Its price appears after the next check.")
                     st.rerun()
 
-# ---- Remove
-@st.dialog("Remove this item?")
+# ---- Stop tracking
+@st.dialog("Stop tracking this item?")
 def confirm_remove():
     st.write(f"**{ui.product_title(product)}** will stop being checked. Its price history is kept, "
-             "and you can restore it from Archived on the dashboard.")
+             "and you can track it again from Not tracked on the dashboard.")
     with st.container(horizontal=True):
-        if st.button("Remove", type="primary"):
+        if st.button("Stop tracking", type="primary", key="confirm_stop"):
             repo.update_product(product["id"], active=False)
             st.session_state.pop("product_id", None)
             st.switch_page(ui.HOME)
@@ -206,5 +206,5 @@ def confirm_remove():
             st.rerun()
 
 
-if product.get("active") and st.button("Remove item", icon=":material/delete:"):
+if product.get("active") and st.button("Stop tracking", icon=":material/visibility_off:"):
     confirm_remove()

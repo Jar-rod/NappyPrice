@@ -119,7 +119,7 @@ Each item belongs to a category, and each category compares prices in its own un
 | Bin refills | cartridge | Genuine and compatible refills never match each other |
 | Sterilising | 100ml or tablet | Fluid and tablets are separate items |
 
-The dashboard shows each category as a collapsible section, grouped by brand. Opening an item lists every store's price, best first; the graph draws one coloured line per store (its cheapest pack that day).
+The dashboard shows each category as a collapsible section, grouped by brand. Each item is either **Tracked** (checked every day and shown on the dashboard) or **Not tracked** (no longer checked, history kept); the switch at the top of the dashboard shows one or the other, and each item has a Tracked switch. Opening an item lists every store's price, best first; the graph draws one coloured line per store (its cheapest pack that day).
 
 Items can be added from the Add page, or from the command line:
 
