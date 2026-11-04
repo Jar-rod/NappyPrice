@@ -101,8 +101,11 @@ def test_no_password_configured_lets_nobody_in(local_db, monkeypatch):
     assert not app.button and not app.toggle
 
 
-def test_bypass_is_ignored_once_supabase_is_configured(local_db, monkeypatch):
-    monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co")   # AUTH_BYPASS is still 1
+def test_bypass_is_ignored_on_the_hosted_server(local_db, monkeypatch):
+    import os
+
+    isdir = os.path.isdir
+    monkeypatch.setattr(os.path, "isdir", lambda p: p == "/mount/src" or isdir(p))   # AUTH_BYPASS is still 1
     monkeypatch.setenv("APP_PASSWORD", "correct horse battery")
     app = open_app()
     assert [b.label for b in app.button] == ["Sign in"]
@@ -200,6 +203,7 @@ def test_bad_database_key_shows_a_clear_message(local_db, monkeypatch):
 
 
 def test_publishable_key_is_refused_with_a_specific_message(local_db, monkeypatch):
+    monkeypatch.delenv("AUTH_BYPASS")
     monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co/rest/v1/")
     monkeypatch.setenv("SUPABASE_SERVICE_KEY", "sb_publishable_abc123")
     monkeypatch.setenv("APP_PASSWORD", "correct horse battery")

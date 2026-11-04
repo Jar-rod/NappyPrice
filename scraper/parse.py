@@ -239,10 +239,30 @@ def query_variants(target: dict) -> list[str]:
     """Search texts to try in order. Some store searches are strict: Dis-Chem finds nothing
     for 'alula gold stage 1' but every tin for 'alula gold 1', so plainer forms follow."""
     first = build_query(target)
-    brand, range_name, size = target.get("brand"), target.get("range_name"), target.get("size")
-    plainer = [" ".join(p for p in (brand, range_name, size) if p), " ".join(p for p in (brand, range_name) if p)]
+    brand, size = target.get("brand"), target.get("size")
+    range_name = target.get("range_name") or _title_range(target)
+    # The brand alone comes last: Babies R Us answers longer searches with unrelated products.
+    plainer = [" ".join(p for p in (brand, range_name, size) if p), " ".join(p for p in (brand, range_name) if p),
+               brand or ""]
     variants = [first] + [re.sub(r"\s+", " ", v).strip().lower() for v in plainer if brand]
     return list(dict.fromkeys(v for v in variants if v))
+
+
+# Words that describe any tin or pack, not this product.
+_GENERIC_WORDS = {"infant", "formula", "from", "birth", "onwards", "months", "month", "years", "year", "stage",
+                  "starter", "follow", "up", "on", "growing", "tin", "pack", "of", "for", "the", "and", "with",
+                  "powder", "milk", "baby", "ready", "to", "feed"}
+
+
+def _title_range(target: dict) -> str | None:
+    """For formula and other items whose range is not in RANGES, up to three telling words from
+    the title stand in for it: 'Novalac Allernova Smooth 400g' searches 'novalac allernova smooth'."""
+    brand, title = target.get("brand"), target.get("title") or ""
+    if not brand or (target.get("category") or "nappies") not in ("formula", "other"):
+        return None
+    rest = re.sub(rf"(?<!\w){re.escape(brand)}(?!\w)|\([^)]*\)", " ", title, flags=re.I).lower()
+    words = [w for w in re.findall(r"(?<![\w-])[a-z][a-z+']+(?![\w-])", rest) if w not in _GENERIC_WORDS]
+    return " ".join(list(dict.fromkeys(words))[:3]) or None
 
 
 def build_query(target: dict) -> str:
@@ -250,7 +270,7 @@ def build_query(target: dict) -> str:
     category = target.get("category") or "nappies"
     brand, range_name, size = target.get("brand"), target.get("range_name"), target.get("size")
     title = target.get("title") or target.get("name") or ""
-    parts: list = [brand, range_name]
+    parts: list = [brand, range_name or _title_range(target)]
     if category == "nappies":
         parts.append(("newborn" if size == "NB" else f"size {size}") if size else None)
     elif category == "formula":

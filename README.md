@@ -83,7 +83,7 @@ uv run python -m scraper.run daily        # check every listing; alerts print in
 AUTH_BYPASS=1 uv run streamlit run app/Home.py
 ```
 
-`AUTH_BYPASS` skips the password for local use only; it is ignored as soon as `SUPABASE_URL` is set.
+`AUTH_BYPASS` skips the password when the app runs on your own machine, including against Supabase; it is ignored on Streamlit Community Cloud.
 
 Other commands:
 

@@ -153,6 +153,19 @@ def test_unit_label_by_category():
 def test_query_variants_get_plainer():
     assert parse.query_variants({"brand": "Alula", "range_name": "Gold", "size": "1", "category": "formula",
                                  "title": "Alula Gold Stage 1 Infant Starter Formula 400g"}) \
-        == ["alula gold stage 1", "alula gold 1", "alula gold"]
+        == ["alula gold stage 1", "alula gold 1", "alula gold", "alula"]
     assert parse.query_variants({"brand": "Pampers", "range_name": "Premium Care", "size": "3"}) \
-        == ["pampers premium care size 3", "pampers premium care 3", "pampers premium care"]
+        == ["pampers premium care size 3", "pampers premium care 3", "pampers premium care", "pampers"]
+
+
+def test_unknown_range_searches_on_title_words():
+    assert parse.query_variants({"brand": "Novalac", "category": "formula", "title": "Novalac Allernova Smooth (400g)"}) \
+        == ["novalac allernova smooth", "novalac"]
+    assert parse.query_variants({"brand": "Similac", "size": "1", "category": "formula",
+                                 "title": "Similac Gold Comfort Stage 1 0-6 Months Infant Starter Formula 820g"})[0] \
+        == "similac gold comfort stage 1"
+    assert parse.build_query({"brand": "Brezza", "category": "other",
+                              "title": "Baby Brezza - Baby Bottle Washer Pro Detergent Tablets"}) == "brezza bottle washer pro"
+    # Categories that add their own words keep doing so.
+    assert parse.build_query({"brand": "Angelcare", "category": "bin_refills",
+                              "title": "Angelcare Nappy Bin 3 Pack Refill"}) == "angelcare refill"

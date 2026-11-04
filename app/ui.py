@@ -12,7 +12,7 @@ from zoneinfo import ZoneInfo
 import streamlit as st
 
 from core import config
-from core.jobs import STUCK_AFTER, JobError, home_runner_online, home_runner_seen, start_job
+from core.jobs import STUCK_AFTER, JobError, home_runner_online, home_runner_seen, on_hosted_server, start_job
 from core.models import size_word
 from core.repo import Repo, get_repo, now_utc, parse_ts
 from scraper.adapters import home_only_stores, store_rows
@@ -58,8 +58,8 @@ def _remembered(password: str) -> bool:
 
 def require_login() -> str:
     """Stop the page unless the shared password has been entered. Returns a label for who is using the app."""
-    # The bypass is for local development and never applies once Supabase is configured.
-    if config.flag("AUTH_BYPASS") and not config.get("SUPABASE_URL"):
+    # The bypass is for running the app on your own machine and never applies on the hosted server.
+    if config.flag("AUTH_BYPASS") and not on_hosted_server():
         return "local"
     password = config.get("APP_PASSWORD")
     if st.session_state.get("signed_in"):

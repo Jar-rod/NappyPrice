@@ -31,6 +31,16 @@ def test_search_page(rel):
     assert all(adapter.owns(h.url) for h in hits)
 
 
+def test_magento_search_skips_promoted_products():
+    def card(href, title):
+        return f'<li class="product-item"><a class="product-item-link" href="{href}">{title}</a></li>'
+
+    html = (f'<div class="block widget block-products-list"><ol>{card("/high-chair", "High Chair")}</ol></div>'
+            f'<div class="search results"><ol>{card("/brezza-tablets", "Baby Brezza Tablets")}</ol></div>')
+    hits = ADAPTERS["babiesrus"](None).parse_search(html)
+    assert [h.title for h in hits] == ["Baby Brezza Tablets"]
+
+
 def test_every_store_has_a_fixture():
     covered = {rel.split("/")[0] for rel in PRODUCTS}
     assert {s for s, cls in ADAPTERS.items() if cls.active} <= covered

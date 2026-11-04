@@ -31,7 +31,10 @@ class MagentoStore(StoreAdapter):
 
     def parse_search(self, html):
         hits = []
-        for item in make_soup(html).select("li.product-item"):
+        soup = make_soup(html)
+        # Babies R Us puts the same promoted products above every result list; read only the results.
+        items = soup.select(".search.results li.product-item") or soup.select("li.product-item")
+        for item in items:
             link = item.select_one("a.product-item-link")
             if not link or not link.get("href"):
                 continue

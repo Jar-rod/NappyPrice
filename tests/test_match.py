@@ -120,8 +120,36 @@ def test_search_falls_back_to_a_plainer_query_when_a_store_finds_nothing(repo, m
             return ProductPage(url=url, store_id="dischem", title="Alula Gold 1 900g Tin", brand="Alula", price=299.99)
 
     monkeypatch.setattr(match, "ADAPTERS", {"dischem": StrictSearch})
-    target = with_category({"title": "Alula Gold Stage 1 0-6 Months Infant Starter Formula 400g",
+    target = with_category({"title": "Alula Gold Stage 1 0-6 Months Infant Starter Formula 900g",
                             "brand": "Alula", "range_name": "Gold"}, "formula")
     candidates, errors = match.find_matches(repo, None, target)
     assert asked == ["alula gold stage 1", "alula gold 1"]
     assert [c["units_per_pack"] for c in candidates["dischem"]] == [9] and not errors
+
+
+def test_search_keeps_going_past_a_near_miss(repo, monkeypatch):
+    """Like Clicks: 'similac gold comfort' finds only Stage 2, a bare 'similac' finds Stage 1."""
+    from core.models import ProductPage, SearchHit
+    from scraper import match
+
+    pages = {"https://clicks.test/stage-2": "Similac Gold Comfort Stage 2 Follow-On Formula 820g",
+             "https://clicks.test/stage-1": "Similac Gold Comfort Stage 1 Starter Infant Formula 820g"}
+    asked = []
+
+    class NoisySearch:
+        def __init__(self, fetcher):
+            pass
+
+        def search(self, query):
+            asked.append(query)
+            urls = list(pages) if query == "similac" else ["https://clicks.test/stage-2"]
+            return [SearchHit(u, pages[u], 379.0) for u in urls]
+
+        def extract(self, url):
+            return ProductPage(url=url, store_id="clicks", title=pages[url], brand="Similac", price=379.0)
+
+    monkeypatch.setattr(match, "ADAPTERS", {"clicks": NoisySearch})
+    target = with_category({"title": pages["https://clicks.test/stage-1"], "brand": "Similac"}, "formula")
+    candidates, _ = match.find_matches(repo, None, target)
+    assert asked[-1] == "similac"
+    assert candidates["clicks"][0]["url"] == "https://clicks.test/stage-1"

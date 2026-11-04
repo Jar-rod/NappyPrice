@@ -98,7 +98,7 @@ def find_matches(repo: Repo, fetcher: Fetcher, target: dict, skip_store: str | N
             errors[store_id] = "not searched: only the Mac runner can read this store, and it is offline"
             continue
         adapter = ADAPTERS[store_id](fetcher)
-        ranked, error = [], None
+        scored, error = {}, None
         for text in queries:
             try:
                 hits = adapter.search(text)[:SEARCH_HITS]
@@ -107,10 +107,14 @@ def find_matches(repo: Repo, fetcher: Fetcher, target: dict, skip_store: str | N
                 break
             # Rank on the search title first so only the likeliest few pages are fetched.
             # Some stores answer a search with unrelated bestsellers; those are dropped here.
-            scored = [(score(target, _from_title(h.title, category)), h) for h in hits if h.url not in known]
-            ranked = [h for s, h in sorted(scored, key=lambda pair: pair[0], reverse=True) if s >= MIN_TITLE_SCORE]
-            if ranked:
-                break   # otherwise try a plainer search text
+            for h in hits:
+                if h.url not in known and h.url not in scored:
+                    scored[h.url] = (score(target, _from_title(h.title, category)), h)
+            # A near miss (Stage 2 when Stage 1 is wanted) is kept, but a plainer search may still find the item.
+            if any(s >= PRETICK_SCORE for s, _ in scored.values()):
+                break
+        ranked = [h for s, h in sorted(scored.values(), key=lambda pair: pair[0], reverse=True)
+                  if s >= MIN_TITLE_SCORE]
         if error and not ranked:
             errors[store_id] = error
             continue
