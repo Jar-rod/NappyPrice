@@ -1,4 +1,4 @@
-"""Smoke tests: every page renders against seeded local data, and the password gates access."""
+"""Smoke tests: every page renders against seeded local data."""
 from datetime import timedelta
 from pathlib import Path
 
@@ -27,11 +27,10 @@ def local_db(tmp_path, monkeypatch):
     import streamlit as st
 
     path = tmp_path / "db.json"
-    for name in ("SUPABASE_URL", "SUPABASE_SERVICE_KEY", "GITHUB_TOKEN", "APP_PASSWORD"):
+    for name in ("SUPABASE_URL", "SUPABASE_SERVICE_KEY", "GITHUB_TOKEN"):
         # Set to blank rather than removed, so values in a local .env are not picked up.
         monkeypatch.setenv(name, "")
     monkeypatch.setenv("LOCAL_DB_PATH", str(path))
-    monkeypatch.setenv("AUTH_BYPASS", "1")
     st.cache_resource.clear()
     repo = Repo(MemoryBackend(str(path)))
     repo.ensure_stores(store_rows())
@@ -66,50 +65,10 @@ def test_dashboard_toggle_switches_alerts_off(local_db):
     assert repo.get_product(product["id"])["alert_enabled"] is False
 
 
-def test_visitor_without_the_password_sees_only_the_sign_in_form(local_db, monkeypatch):
-    monkeypatch.delenv("AUTH_BYPASS")
-    monkeypatch.setenv("APP_PASSWORD", "correct horse battery")
+def test_dashboard_opens_without_a_password(local_db):
     app = open_app()
-    assert [b.label for b in app.button] == ["Sign in"]
-    assert not app.toggle and not app.header
-
-
-def test_wrong_password_is_refused_and_right_one_opens_the_dashboard(local_db, monkeypatch):
-    monkeypatch.delenv("AUTH_BYPASS")
-    monkeypatch.setenv("APP_PASSWORD", "correct horse battery")
-    monkeypatch.setattr("time.sleep", lambda s: None)
-    app = open_app()
-    app.text_input[0].set_value("guess")
-    app.button[0].click().run()
-    assert [e.value for e in app.error] == ["Wrong password."]
-    assert not app.toggle
-
-    app.text_input[0].set_value("correct horse battery")
-    app.button[0].click().run()
-    assert not app.error and app.toggle                     # dashboard is showing
-    cookie = next(h.body for h in app.get("html") if "document.cookie" in h.body)
-    assert "npw_auth=" in cookie and "correct horse battery" not in cookie   # a token, never the password
-    app.switch_page("pages/3_Alerts.py").run()              # and stays unlocked on other pages
-    assert app.title[0].value == "Alerts and health"
-
-
-def test_no_password_configured_lets_nobody_in(local_db, monkeypatch):
-    monkeypatch.delenv("AUTH_BYPASS")
-    monkeypatch.delenv("APP_PASSWORD", raising=False)
-    app = open_app()
-    assert "No password is set" in app.error[0].value
-    assert not app.button and not app.toggle
-
-
-def test_bypass_is_ignored_on_the_hosted_server(local_db, monkeypatch):
-    import os
-
-    isdir = os.path.isdir
-    monkeypatch.setattr(os.path, "isdir", lambda p: p == "/mount/src" or isdir(p))   # AUTH_BYPASS is still 1
-    monkeypatch.setenv("APP_PASSWORD", "correct horse battery")
-    app = open_app()
-    assert [b.label for b in app.button] == ["Sign in"]
-    assert not app.toggle
+    assert not app.text_input and app.toggle
+    assert "Sign out" not in [b.label for b in app.button]
 
 
 def test_item_page_shows_chart_and_listings(local_db):
@@ -134,35 +93,6 @@ def test_dashboard_groups_by_category_then_brand(local_db):
     app = open_app()
     assert [e.label for e in app.expander] == ["Nappies · 2 items", "Wipes · 1 item"]
     assert [h.value for h in app.subheader] == ["Huggies", "Pampers", "Pampers"]
-
-
-def test_remembered_device_skips_the_password(local_db, monkeypatch):
-    from app import ui
-
-    monkeypatch.delenv("AUTH_BYPASS")
-    monkeypatch.setenv("APP_PASSWORD", "correct horse battery")
-    monkeypatch.setattr(ui, "_remembered", lambda password: password == "correct horse battery")
-    app = open_app()
-    assert not app.text_input and app.toggle                # straight to the dashboard
-
-
-def test_remember_token_changes_with_the_password():
-    from app import ui
-
-    assert ui._remember_token("one") != ui._remember_token("two")
-    assert "one" not in ui._remember_token("one")
-
-
-def test_sign_out_returns_to_the_password_page_even_with_the_cookie(local_db, monkeypatch):
-    from app import ui
-
-    monkeypatch.delenv("AUTH_BYPASS")
-    monkeypatch.setenv("APP_PASSWORD", "correct horse battery")
-    monkeypatch.setattr(ui, "_remembered", lambda password: True)
-    app = open_app()
-    next(b for b in app.button if b.label == "Sign out").click().run()
-    assert [b.label for b in app.button] == ["Sign in"]
-    assert any("max-age=0" in h.body for h in app.get("html"))      # cookie cleared in the browser
 
 
 def test_dashboard_filters_by_brand_and_store(local_db):
@@ -203,14 +133,10 @@ def test_bad_database_key_shows_a_clear_message(local_db, monkeypatch):
 
 
 def test_publishable_key_is_refused_with_a_specific_message(local_db, monkeypatch):
-    monkeypatch.delenv("AUTH_BYPASS")
     monkeypatch.setenv("SUPABASE_URL", "https://example.supabase.co/rest/v1/")
     monkeypatch.setenv("SUPABASE_SERVICE_KEY", "sb_publishable_abc123")
-    monkeypatch.setenv("APP_PASSWORD", "correct horse battery")
     monkeypatch.setattr("time.sleep", lambda s: None)
     app = open_app()
-    app.text_input[0].set_value("correct horse battery")
-    app.button[0].click().run()
     assert not app.exception
     assert "Cannot reach the database" in app.error[0].value
     assert "needs the secret key, which starts with sb_secret_" in app.caption[0].value

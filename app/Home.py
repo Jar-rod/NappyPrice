@@ -160,4 +160,3 @@ for category, brands in by_category.items():
             for row in items:
                 item_card(row)
 
-ui.sign_out_button()

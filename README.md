@@ -61,11 +61,10 @@ The app shows whether the Mac runner is online. Amazon.co.za is read as one slow
 3. **Resend.** Create an API key. To email two different addresses you must verify a sending domain in Resend and set `EMAIL_FROM` to an address on it; without a verified domain Resend only delivers to the account owner's own address.
 4. **GitHub Actions secrets** (repo → Settings → Secrets and variables → Actions): `SUPABASE_URL`, `SUPABASE_SERVICE_KEY`, `NTFY_TOPIC`, `RESEND_API_KEY`, `EMAIL_FROM`, `ALERT_EMAILS` (both addresses, comma-separated).
 5. **GitHub token for the app.** Create a fine-grained personal access token limited to this repo with *Actions: Read and write*. The app uses it to start "Check now" and add-by-link runs.
-6. **App password.** Choose a long password; both of you use the same one. It goes in the app secrets as `APP_PASSWORD`.
-7. **Streamlit Community Cloud.** Deploy the repo with main file `app/Home.py`, then paste the contents of `.streamlit/secrets.toml.example` into the app's Secrets box and fill it in.
-8. Push to `main`, then run the **Price check** workflow once by hand (Actions → Price check → Run workflow) to confirm it reaches Supabase.
+6. **Streamlit Community Cloud.** Deploy the repo with main file `app/Home.py`, then paste the contents of `.streamlit/secrets.toml.example` into the app's Secrets box and fill it in.
+7. Push to `main`, then run the **Price check** workflow once by hand (Actions → Price check → Run workflow) to confirm it reaches Supabase.
 
-The app is protected by the one shared password. With no `APP_PASSWORD` set, nobody can get in. "Remember me on this device" keeps a device signed in for 180 days; "Sign out" at the bottom of the dashboard forgets it, and changing `APP_PASSWORD` signs every device out.
+The app has no login: anyone with its link can see and change the items. To limit who can open it, make the app private in Streamlit Community Cloud (app settings → Sharing) and invite the people who use it.
 
 ## Running locally
 
@@ -80,10 +79,8 @@ With no Supabase settings the scraper and app use a local file, `.local_db.json`
 ```sh
 uv run python -m scraper.seed             # add a few sample products from live pages
 uv run python -m scraper.run daily        # check every listing; alerts print instead of sending
-AUTH_BYPASS=1 uv run streamlit run app/Home.py
+uv run streamlit run app/Home.py
 ```
-
-`AUTH_BYPASS` skips the password when the app runs on your own machine, including against Supabase; it is ignored on Streamlit Community Cloud.
 
 Other commands:
 

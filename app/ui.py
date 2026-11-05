@@ -1,18 +1,14 @@
-"""Shared pieces for every page: the password gate, the repo, formatting, job polling."""
+"""Shared pieces for every page: the repo, formatting, job polling."""
 from __future__ import annotations
 
-import hashlib
-import hmac
 import html
-import time
 from datetime import datetime
 from urllib.parse import urlparse
 from zoneinfo import ZoneInfo
 
 import streamlit as st
 
-from core import config
-from core.jobs import STUCK_AFTER, JobError, home_runner_online, home_runner_seen, on_hosted_server, start_job
+from core.jobs import STUCK_AFTER, JobError, home_runner_online, home_runner_seen, start_job
 from core.models import size_word
 from core.repo import Repo, get_repo, now_utc, parse_ts
 from scraper.adapters import home_only_stores, store_rows
@@ -26,77 +22,6 @@ def _repo() -> Repo:
     repo = get_repo()
     repo.ensure_stores(store_rows())
     return repo
-
-
-COOKIE = "npw_auth"
-REMEMBER_DAYS = 180
-
-
-def _remember_token(password: str) -> str:
-    """What the remember-me cookie holds: derived from the password, so changing
-    the password signs every remembered device out. The password itself is never stored."""
-    return hmac.new(password.encode(), b"nappy-price-watch remember v1", hashlib.sha256).hexdigest()
-
-
-def _cookie_script(value: str, max_age: int) -> None:
-    """Set (or with max_age 0, clear) the remember-me cookie in the browser."""
-    st.html(
-        "<script>document.cookie = '%s=%s; path=/; max-age=%d; SameSite=Lax'"
-        " + (location.protocol === 'https:' ? '; Secure' : '');</script>" % (COOKIE, value, max_age),
-        unsafe_allow_javascript=True)
-
-
-def _remembered(password: str) -> bool:
-    try:
-        cookie = st.context.cookies.get(COOKIE) or ""
-    except Exception:
-        return False
-    if not isinstance(cookie, str):
-        return False
-    return hmac.compare_digest(cookie.encode(), _remember_token(password).encode())
-
-
-def require_login() -> str:
-    """Stop the page unless the shared password has been entered. Returns a label for who is using the app."""
-    # The bypass is for running the app on your own machine and never applies on the hosted server.
-    if config.flag("AUTH_BYPASS") and not on_hosted_server():
-        return "local"
-    password = config.get("APP_PASSWORD")
-    if st.session_state.get("signed_in"):
-        if st.session_state.pop("remember_pending", False) and password:
-            _cookie_script(_remember_token(password), REMEMBER_DAYS * 86400)
-        return "shared"
-    if st.session_state.pop("forget_pending", False):
-        _cookie_script("", 0)
-    st.title("Nappy Price Watch")
-    if not password:
-        # No password configured means nobody gets in, rather than everybody.
-        st.error("No password is set. Add APP_PASSWORD to the app secrets (see README).")
-        st.stop()
-    if _remembered(password) and not st.session_state.get("signed_out"):
-        st.session_state["signed_in"] = True
-        st.rerun()
-    with st.form("sign_in"):
-        entered = st.text_input("Password", type="password", autocomplete="current-password")
-        remember = st.checkbox("Remember me on this device", value=True)
-        submitted = st.form_submit_button("Sign in", type="primary")
-    if submitted:
-        if hmac.compare_digest(entered.encode(), password.encode()):
-            st.session_state["signed_in"] = True
-            st.session_state["remember_pending"] = remember
-            st.rerun()
-        time.sleep(1.5)  # slows down guessing
-        st.error("Wrong password.")
-    st.stop()
-
-
-def sign_out_button() -> None:
-    """Forget this device and return to the password page."""
-    if st.session_state.get("signed_in") and st.button("Sign out", icon=":material/logout:"):
-        st.session_state["signed_in"] = False
-        st.session_state["signed_out"] = True      # ignore the cookie until the browser has dropped it
-        st.session_state["forget_pending"] = True
-        st.rerun()
 
 
 STYLE = """
@@ -137,7 +62,7 @@ def setup(title: str) -> tuple[Repo, str]:
     """Call first on every page."""
     st.set_page_config(page_title=f"{title} · Nappy Price Watch", page_icon="🍼", layout="centered")
     st.html(STYLE)
-    user = require_login()
+    user = "shared"
     # A wrong or revoked key should give a clear message, not a traceback. The first
     # connection and one check per visit both go through here.
     try:
